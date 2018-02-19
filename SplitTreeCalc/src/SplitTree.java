@@ -106,6 +106,11 @@ public class SplitTree {
 				R2.add(Ru.get(i));
 			}
 		}
+		
+		vNode.setRo(R1);
+		wNode.setRo(R2);
+		
+		
 	}
 	
 	private void step5() {
