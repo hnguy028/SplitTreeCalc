@@ -1,0 +1,114 @@
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+import Objects.*;
+import DataStructures.*;
+
+public class Main {
+	public static void main(String[] args) {
+		int dimension_size = 2;
+		
+		Point A = new Point(0.0, 0.0);
+		Point B = new Point(1.0, 10.0); 
+		Point C = new Point(3.0/2.0, 1.0); 
+		Point D = new Point(2.0, 5.0/2.0); 
+		Point E = new Point(8.0, 7.0); 
+		Point F = new Point(11.0, 2.0); 
+		Point G = new Point(11.0, 9.0);
+		Point H = new Point(12.0 ,0.0);
+		
+		LinkedList<Point> S = new LinkedList<Point>(Arrays.asList(A, B, C, D, E, F, G, H));
+		DoublyLinkedList SS = new DoublyLinkedList(2);
+		SS.add(A.getCoordinates());
+		SS.add(B.getCoordinates());
+		SS.add(C.getCoordinates());
+		SS.add(D.getCoordinates());
+		SS.add(E.getCoordinates());
+		SS.add(F.getCoordinates());
+		SS.add(G.getCoordinates());
+		SS.add(H.getCoordinates());
+		
+		DoublyLinkedList SS2 = SS.clone();
+		
+		DoublyLinkedListIterator linkedListIterator = SS.iterator();
+		
+		while()
+		
+		SS.sort(0);
+		SS.print();
+		
+		SS.sort(1);
+		SS.print();
+		
+		SS.remove(0);
+		SS.print();
+		
+		SS.sort(0);
+		SS.print();
+		
+		SS.get(1).remove();
+		SS.print();
+		//System.out.println(SS.size());
+		
+//		Collection_LS collection = new Collection_LS(S, 2);
+//		Collection_LS collection2 = collection.clone();
+//		
+//		LinkedList<Point> S1 = collection.getLSAt(0);
+//		LinkedList<Point> S2 = collection.getLSAt(1);
+//		
+//		HyperRectangle hyp = new HyperRectangle(collection, 
+//				new LinkedList<Point>(Arrays.asList(
+//						new Point(-5.0,24.0), new Point(-10.0,20.0))));
+//		
+//		hyp.print();
+//		
+//		for(Point p:S1) { System.out.print(p.toString() + " "); }
+//		System.out.println();
+//		for(Point p:S2) { System.out.print(p.toString() + " "); }
+//		System.out.println();
+//		S2.remove(6);
+//		for(Point p:S2) { System.out.print(p.toString() + " "); }
+//		System.out.println();
+//		System.out.println(collection.toString());
+//		System.out.println(collection2.toString());
+	}
+	
+	public void partialSplitTree(List<Point> S, HyperRectangle R, List<Point> LS) {
+		
+	}
+	
+	public void preProcess(List<Point> _pointSet, int _dimension) {
+		// create d, linkedlists from point set each sorted wrt to the dimension
+		LinkedList<Point>[] LS = new LinkedList[_dimension];
+		
+		for(LinkedList<Point> LSI : LS) {
+			;
+		}
+	}
+	
+	public void fastSplitTree(List<Point> S, HyperRectangle R) {
+		if(S.size() <= 1) { splitTreeCardOne(S, R); }
+		
+		
+	}
+	
+	public void splitTreeCardOne(List<Point> S, HyperRectangle R) {
+		// if |S| == 1
+		
+		
+		// create a node u
+		// Node u;
+		
+		// bounding box R(u) = R(S)
+		
+		// rectangle containing bounding box Ro(u) = R
+		
+		// Store with u the only point of S, Ro(u), R(u)
+		
+		// set u's pointers to null
+		
+		// return u;
+	}
+}

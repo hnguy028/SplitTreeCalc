@@ -1,0 +1,63 @@
+import java.util.LinkedList;
+
+import DataStructures.HyperRectangle;
+import DataStructures.LS_Collection;
+import DataStructures.TreeNode;
+
+public class SplitTree {
+	
+	LinkedList<double[]> S;
+	LinkedList<double[]> Ro;
+	LS_Collection CLS;
+	LS_Collection LS;
+	int size;
+	
+	TreeNode uNode;
+	
+	//public void FastSplitTree(LinkedList<Point> S, HyperRectangle R) {} 
+	
+	private void partialSplitTree(LinkedList<double[]> _S, HyperRectangle _R, LS_Collection _LS) {
+		// Step 1: Make copies CLSi of lists LSi
+		S = _S;
+		Ro = _R.getR();
+		LS = _LS;
+		CLS = _LS.clone();
+		size = _S.size();
+		
+		// Create a node u, which will be the root of the final partial split tree
+		uNode = new TreeNode(_S, _R.getRo(), _LS);
+		
+		step2();
+	}
+	
+	private void step2() {
+		if(size <= S.size()) {
+			for(int i = 0; i < LS.getDimensionSize(); i++) {
+				
+			}
+			
+			
+			step6();
+		} else {
+			step3();
+		}
+	}
+	
+	private void step3() {
+		
+	}
+	
+	private void step4() {
+		
+	}
+	
+	private void step5() {
+		
+	}
+	
+	private void step6() {
+		
+	}
+	//private void SplitTreeOne(LinkedList<Point> S, HyperRectangle R, Collection_LS LS) {
+		// if |S| == 1 }
+}

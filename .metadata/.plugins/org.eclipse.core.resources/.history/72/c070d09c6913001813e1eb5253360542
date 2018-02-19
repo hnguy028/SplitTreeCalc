@@ -1,0 +1,22 @@
+package Objects;
+
+import java.util.List;
+
+public class Collection_LS {
+	List<List<Point>> LS;
+	
+	public Collection_LS(List<Point> pointSet, int dimension) {
+		for(int i=0; i < dimension; i++) {
+			sortPoints(pointSet, dimension);
+		}
+	}
+	
+	/* Sort pointset on specified dimension and store in LS[dimension] */
+	private void sortPoints(List<Point> pointSet, int dimension) {
+		
+	}
+	
+	public List<Point> getLS(int i) {
+		return LS.get(i);
+	}
+}

@@ -1,0 +1,14 @@
+import java.util.Arrays;
+import java.util.LinkedList;
+
+public class Sandbox {
+	public static void main(String[] args) {
+		LinkedList<Double>[] LS = new LinkedList[3];
+		
+		for(LinkedList<Double> d : LS) {
+			d = new LinkedList<Double>(Arrays.asList(1.0));
+		}
+		
+		System.out.println(LS.length);
+	}
+}

@@ -1,0 +1,14 @@
+package Objects;
+
+import java.util.LinkedList;
+
+public class HyperRectangle {
+	public HyperRectangle() {
+		
+	}
+	
+	public static LinkedList<Point> getBoundingBox(LinkedList<Point> pointSet) {
+		
+		return null;
+	}
+}

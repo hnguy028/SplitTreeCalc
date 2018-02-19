@@ -1,0 +1,25 @@
+package DataStructures;
+
+import java.util.Iterator;
+
+public class DoublyLinkedListIterator implements Iterator<PointNode>{
+
+	private PointNode current;
+	
+	public DoublyLinkedListIterator(PointNode p) {
+		current = p;
+	}
+	
+	@Override
+	public boolean hasNext() {
+		return current.getNext() != null;
+	}
+
+	@Override
+	public PointNode next() {
+		PointNode temp = current;
+		current = current.getNext();
+		return temp;
+	}
+
+}

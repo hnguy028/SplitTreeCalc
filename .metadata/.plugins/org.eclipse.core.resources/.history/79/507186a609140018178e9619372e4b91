@@ -1,0 +1,26 @@
+package Objects;
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class HyperRectangle {
+	LinkedList<Point> Ro; // Ro(u) := R 		Rectangle containing the bounding box
+	LinkedList<Point> R; // R(u) := R(Su)		Bounding box
+	
+	public HyperRectangle(LinkedList<Point> pointSet, LinkedList<Point> _Ro) {
+		this.Ro = _Ro;
+		computeBoundingBox(pointSet);
+	}
+	
+	private void computeBoundingBox(LinkedList<Point> pointSet) {
+		
+	}
+	
+	public LinkedList<Point> getRo() {
+		return Ro;
+	}
+	
+	public LinkedList<Point> getR() {
+		return R;
+	}
+}

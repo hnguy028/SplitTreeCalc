@@ -1,0 +1,54 @@
+package DataStructures;
+
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class PointNode{
+	
+	private double[] coords;
+	private int dimensions;
+	
+	private int[] LS_indices;
+	private PointNode[] pointers;
+	
+	public PointNode next;
+	public PointNode prev;
+	
+	public PointNode(double[] _coords) {
+		this.coords = _coords;
+		this.dimensions = this.coords.length;
+		
+		this.pointers = new PointNode[this.dimensions];
+		
+		this.next = null;
+		this.prev = null;
+	}
+	
+	//public void updateIndex(int dimension, int index) { this.LS_indices[dimension] = index; }
+	
+	//public int getIndexAt(int dimension) { return LS_indices[dimension]; }
+	
+	public PointNode getNext() { return this.next; }
+	public void setNext(PointNode _next) { this.next = _next; _next.prev = this; }
+	
+	public PointNode getPrev() { return this.prev; }
+	public void setPrev(PointNode _prev) { this.prev = _prev; _prev.next = this; }
+	
+	public double[] getCoordinates() { return this.coords; }
+	
+	public int getDimensions() { return this.dimensions; }
+	
+	public double getCoordinateValueAt(int _dimension) { return this.coords[_dimension]; }
+	
+	public int compareTo(PointNode _point, int _dimension) {
+		if(_dimension >= _point.getDimensions() || _dimension >= this.dimensions) { throw new IndexOutOfBoundsException(); }
+		
+		if(this.coords[_dimension] == _point.getCoordinateValueAt(_dimension)) { return 0; }
+		if(this.coords[_dimension] > _point.getCoordinateValueAt(_dimension)) { return 1; }
+		return -1;
+	}
+	
+	public String toString() { return Arrays.toString(coords).replace("[", "(").replace("]", ")"); }
+	
+	public void printString() { System.out.println(Arrays.toString(coords).replace("[", "(").replace("]", ")")); }
+}

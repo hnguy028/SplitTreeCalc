@@ -1,0 +1,120 @@
+package DataStructures;
+
+import java.util.Collections;
+import java.util.LinkedList;
+
+public class DoublyLinkedList {
+	private PointNode head;
+	private PointNode tail;
+	private int size;
+	private PointNodeComparator comparator;
+	private int dimensions;
+	
+	public DoublyLinkedList(int _dimensions) {
+		this.head = null;
+		this.tail = null;
+		this.size = 0;
+		this.comparator = new PointNodeComparator();
+		this.dimensions = _dimensions;
+	}
+	
+	public void add(double[] coords) {
+		PointNode temp = new PointNode(coords);
+		if(head == null || tail == null) {
+			head = temp; 
+			tail = temp;
+		} else { 
+			tail.setNext_Prev(temp);
+			tail = temp;
+		}
+		size++;
+	}
+	
+	public void add(PointNode p) {
+		if(head == null || tail == null) {
+			head = p; 
+			tail = p;
+		} else { 
+			tail.setNext_Prev(p);
+			tail = p;
+		}
+		size++;
+	}
+	
+	public void add(double[] coords, int index) throws Exception {
+		throw new Exception("Should implement");
+	}
+	
+	public PointNode get(int index) {
+		if(index < 0 || this.size < 1 || index >= this.size) { throw new ArrayIndexOutOfBoundsException(); }
+		
+		PointNode temp = this.head;
+		
+		for(int i = 0; i < index; i++) { temp = temp.getNext(); }
+		
+		return temp;
+	}
+	
+	public void remove(int index) {
+		if(index < 0 || this.size < 1 || index >= this.size) { throw new IndexOutOfBoundsException(); }
+		
+		PointNode temp = this.head;
+		
+		if(index == 0) { this.head = temp.getNext(); }
+		if(index == this.size-1) {this.tail = temp.getPrev(); }
+		
+		for(int i = 0; i < index; i++) { temp = temp.getNext(); }
+		
+		PointNode _prev = temp.getPrev();
+		PointNode _next = temp.getNext();
+		
+		if(_prev != null) { _prev.setNext(_next); }
+		if(_next != null) { _next.setPrev(_prev); }
+		this.size--;
+	}
+	
+	public int size() { return this.size; }
+	
+	public void sort(int dimension) {
+		if(dimension > this.dimensions || dimension < 0) { throw new IndexOutOfBoundsException(); }
+		if (this.size <= 0) { return; }
+		
+		LinkedList<PointNode> temp = this.toLinkedList(); 
+		Collections.sort(temp, comparator.setSortDimension(dimension));
+		loadList(temp);
+	}
+	
+	private LinkedList<PointNode> toLinkedList() {
+		LinkedList<PointNode> result = new LinkedList<PointNode>();
+		PointNode temp = this.head;
+		
+		for(int i = 0; i < size; i++) {
+			result.add(temp);
+			temp = temp.getNext(); 
+		}
+		return result;
+	}
+	
+	private void loadList(LinkedList<PointNode> l) {
+		head = null;
+		tail = null;
+		size = 0;
+		for(PointNode p : l) { this.add(p); }
+	}
+	
+	public String toString() {
+		String out = "[";
+		
+		PointNode temp = this.head;
+		
+		for(int i = 0; i < size; i++) { 
+			out += (i == size-1) ? temp.toString() : temp.toString() + ", "; 
+			temp = temp.getNext(); 
+		}
+		
+		return out + "]";
+	}
+	
+	public void print() { System.out.println(this.toString()); }
+
+}

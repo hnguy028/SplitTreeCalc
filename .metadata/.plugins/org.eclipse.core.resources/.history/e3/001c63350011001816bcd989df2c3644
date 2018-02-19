@@ -1,0 +1,12 @@
+import java.util.LinkedList;
+
+public class Sandbox {
+	public static void main(String[] args) {
+		LinkedList<Double>[] LS = new LinkedList[3];
+		
+		for(LinkedList<Double> d : LS) {
+			d = new LinkedList<Double>();
+		}
+		
+	}
+}

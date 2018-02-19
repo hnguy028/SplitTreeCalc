@@ -1,0 +1,89 @@
+package DataStructures;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+
+public class LS_Collection {
+	LinkedList<DoublyLinkedList> LS;	// LSi
+	int n;						// |pointSet|
+	int dimensionSize;
+	
+	public LS_Collection(LinkedList<double []> pointSet, int dimension) {
+		LS = new LinkedList<DoublyLinkedList>();
+		n = pointSet.size();
+		dimensionSize = dimension;
+		
+		DoublyLinkedList temp = new DoublyLinkedList(dimension);
+		LinkedList<DoublyLinkedListIterator> iterators = new LinkedList<DoublyLinkedListIterator>();
+		
+		// add points to LS
+		for(double[] point : pointSet) { temp.add(point); }
+		
+		// set LSi's, and LSi iterators
+		for(int i=0; i < dimension; i++) {
+			LS.add(temp.clone());
+			iterators.add(temp.iterator());
+		}
+		
+		// iterate pointset, and set cross pointers
+		while(iterators.getFirst().hasNext()) {
+			
+			// cross pointers list
+			ArrayList<PointNode> pointers = new ArrayList<PointNode>(); 
+			
+			for(DoublyLinkedListIterator dlli : iterators) {
+				
+				// add point from each dimension to pointers list
+				pointers.add(dlli.next());
+			}
+			
+			// for each dimension set cross pointers list
+			for(PointNode pNode : pointers) { pNode.setCrossPointers(pointers); }
+		}
+		
+		// sort each LSi by dimension
+		for(int i = 0; i < dimension; i++) { LS.get(i).sort(i); }
+	}
+	
+	private LS_Collection(LinkedList<DoublyLinkedList> _LS, int _dimension, int _n) {
+		this.LS = _LS;
+		this.n= _n;
+		this.dimensionSize = _dimension;
+	}
+	
+	public DoublyLinkedList getLSi(int i) { return LS.get(i); }
+	
+	public LinkedList<DoublyLinkedList> getLS() { return LS; }
+	
+	public int getDimensionSize() { return this.dimensionSize; }
+	
+	// Given the dimension of the hyperplane
+	public void splitCollection(int hyperplaneIndex) {
+			
+	}
+		
+	// Remove 
+	public void remove() {
+			
+	}
+	
+	public LS_Collection clone() {
+		LinkedList<DoublyLinkedList> _LS = new LinkedList<DoublyLinkedList>();
+		for(DoublyLinkedList L : this.LS) { _LS.add(L.clone()); }
+		return new LS_Collection(_LS, dimensionSize, n);
+	}
+	
+	public String toString() {
+		String out = "{ ";
+		for(int i = 0; i < dimensionSize; i++) { 
+			out += (i == dimensionSize - 1) ? LS.get(i).toString() : LS.get(i).toString() + ",\n"; 
+		}
+		return out + " }";
+	}
+	
+	public void print() {
+		System.out.println(toString());
+	}
+}
+	
+	

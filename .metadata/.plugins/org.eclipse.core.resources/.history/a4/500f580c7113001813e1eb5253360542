@@ -1,0 +1,22 @@
+package Objects;
+
+import java.util.Comparator;
+
+public class PointComparator implements Comparator<Point> {
+	private int dimension = 0;
+	
+	public PointComparator(int _dimension) {
+		this.dimension = _dimension;
+	}
+	
+	public PointComparator setSortDimension(int _dimension) {
+		this.dimension = _dimension;
+		return this;
+	}
+	
+	@Override
+	public int compare(Point p1, Point p2) {
+		return p1.compareTo(p2, this.dimension);
+	}
+
+}

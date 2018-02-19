@@ -1,0 +1,29 @@
+package Objects;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+public class Collection_LS {
+	List<LinkedList<Point>> LS;
+	PointComparator comparator;
+	
+	public Collection_LS(LinkedList<Point> pointSet, int dimension) {
+		comparator = new PointComparator(0);
+		
+		for(int i=0; i < dimension; i++) {
+			LS.add(new LinkedList<Point>());
+			sortPoints(pointSet, dimension);
+		}
+	}
+	
+	/* Sort pointset on specified dimension and store in LS[dimension] */
+	private void sortPoints(LinkedList<Point> pointSet, int dimension) {
+		for(Point p : pointSet) { LS.get(dimension).add(p); }
+		Collections.sort(LS.get(dimension), comparator.setSortDimension(dimension));
+	}
+	
+	public LinkedList<Point> getLS(int i) {
+		return LS.get(i);
+	}
+}

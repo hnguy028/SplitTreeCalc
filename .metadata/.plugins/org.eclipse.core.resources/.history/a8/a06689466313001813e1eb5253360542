@@ -1,0 +1,38 @@
+package Objects;
+
+public class Point {
+	
+	private double[] coords;
+	
+	public Point(double _x, double _y) {
+		this.coords = new double[] {_x, _y};
+	}
+	
+	public Point(double[] _coords) {
+		this.coords = _coords;
+	}
+	
+	public int length() {
+		return this.coords.length;
+	}
+	
+	public double[] getCoordinates() { return this.coords; }
+	
+	public void setCoordinates(double v, int dim) { coords[dim] = v; }
+	
+	public double getCoordinateValueAt(int _dimension) { return this.coords[_dimension]; }
+	
+	public int compareTo(Point _point, int _dimension) {
+		if(_dimension >= _point.length() || _dimension >= this.coords.length) { throw new IndexOutOfBoundsException(); }
+		
+		if(this.coords[_dimension] == _point.getCoordinateValueAt(_dimension)) { return 0; }
+		if(this.coords[_dimension] > _point.getCoordinateValueAt(_dimension)) { return -1; }
+		return 1;
+	}
+	
+	public void printString() {
+		String out = "(";
+		for(double d : coords) { out += d + ", "; }
+		System.out.println(out + ")");
+	}
+}

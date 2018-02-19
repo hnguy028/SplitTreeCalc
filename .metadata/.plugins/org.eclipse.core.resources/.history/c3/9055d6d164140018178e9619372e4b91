@@ -1,0 +1,56 @@
+package Objects;
+
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class Point{
+	
+	private double[] coords;
+	private int dimensions;
+	
+	private int[] LS_indices;
+	private Point[] pointers;
+	
+	private Point next;
+	private Point previous;
+	
+	public Point(double _x, double _y) {
+		this.coords = new double[] {_x, _y};
+		this.dimensions = 2;
+		this.LS_indices = new int[this.dimensions];
+	}
+	
+	public Point(double[] _coords) {
+		this.coords = _coords;
+		this.dimensions = this.coords.length;
+		this.LS_indices = new int[this.dimensions];
+	}
+	
+	public void updateIndex(int dimension, int index) { this.LS_indices[dimension] = index; }
+	
+	public int getIndexAt(int dimension) { return LS_indices[dimension]; }
+	
+	public double[] getCoordinates() { return this.coords; }
+	
+	public int getDimensions() { return this.dimensions; }
+	
+	public double getCoordinateValueAt(int _dimension) { return this.coords[_dimension]; }
+	
+	public void setCoordinates(double v, int dim) { coords[dim] = v; }
+	
+	public int compareTo(Point _point, int _dimension) {
+		if(_dimension >= _point.getDimensions() || _dimension >= this.dimensions) { throw new IndexOutOfBoundsException(); }
+		
+		if(this.coords[_dimension] == _point.getCoordinateValueAt(_dimension)) { return 0; }
+		if(this.coords[_dimension] > _point.getCoordinateValueAt(_dimension)) { return 1; }
+		return -1;
+	}
+	
+	public String toString() {
+		return Arrays.toString(coords).replace("[", "(").replace("]", ")");
+	}
+	
+	public void printString() {
+		System.out.println(Arrays.toString(coords).replace("[", "(").replace("]", ")"));
+	}
+}

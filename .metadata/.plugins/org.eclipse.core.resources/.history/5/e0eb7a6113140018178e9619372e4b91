@@ -1,0 +1,38 @@
+package Objects;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+public class HyperRectangle {
+	LinkedList<Point> Ro; // Ro(u) := R 		Rectangle containing the bounding box
+	LinkedList<Point> R; // R(u) := R(Su)		Bounding box
+	
+	public HyperRectangle(Collection_LS _LS, LinkedList<Point> _Ro) {
+		this.Ro = _Ro;
+		this.R = new LinkedList<Point>();
+		computeBoundingBox(_LS);
+	}
+	
+	private void computeBoundingBox(Collection_LS LS) {
+		int dimensions = LS.getDimensions();
+		for(int i = 0; i < dimensions; i ++) {
+			LinkedList<Point> LSi = LS.getLSAt(i);
+			R.add(new Point(LSi.getFirst().getCoordinateValueAt(i),
+							LSi.getLast().getCoordinateValueAt(i)));
+		}
+	}
+	
+	public LinkedList<Point> getRo() {
+		return Ro;
+	}
+	
+	public LinkedList<Point> getR() {
+		return R;
+	}
+	
+	public void print() {
+		System.out.println("Ro(u)" + Arrays.toString(Ro.toArray()));
+		System.out.println("R(u)" + Arrays.toString(R.toArray()));
+	}
+}

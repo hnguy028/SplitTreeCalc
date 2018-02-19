@@ -1,0 +1,71 @@
+package Objects;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+public class Collection_LS {
+	List<LinkedList<Point>> LS;	// LSi
+	PointComparator comparator;	// Sorting definition
+	int n;						// |pointSet|
+	int dimensionSize;
+	
+	public Collection_LS(LinkedList<Point> pointSet, int dimension) {
+		LS = new LinkedList<LinkedList<Point>>();
+		comparator = new PointComparator(0);
+		n = pointSet.size();
+		dimensionSize = dimension;
+		
+		for(int i=0; i < dimension; i++) {
+			LS.add(new LinkedList<Point>());
+			sortPoints(pointSet, i);
+		}
+	}
+	
+	public Collection_LS(List<LinkedList<Point>> _LS, int _n) {
+		this.LS = _LS;
+		this.n= _n;
+		this.comparator = new PointComparator(0);
+	}
+	
+	/* Sort pointset on specified dimension and store in LS[dimension] */
+	private void sortPoints(LinkedList<Point> pointSet, int dimension) {
+		for(Point p : pointSet) { LS.get(dimension).add(p); }
+		Collections.sort(LS.get(dimension), comparator.setSortDimension(dimension));
+		for(int i=0; i < n; i++) {
+			LS.get(dimension).get(i).updateIndex(dimension, i);
+		}
+	}
+	
+	public LinkedList<Point> getLSAt(int i) { return LS.get(i); }
+	public List<LinkedList<Point>> getLS() { return LS; }
+	public int getDimensions() { return this.dimensionSize; }
+	
+	// Given the dimension of the hyperplane
+	public void splitCollection(int hyperplaneIndex) {
+		
+	}
+	
+	public void remove() {
+		
+	}
+	
+	public Collection_LS clone() {
+		LinkedList<LinkedList<Point>> _LS = new LinkedList<LinkedList<Point>>();
+		for(LinkedList<Point> L : this.LS) {
+			LinkedList<Point> _LSI = new LinkedList<Point>();
+			for(Point p : L) { _LSI.add(p); }
+			_LS.add(_LSI);
+		}
+		return new Collection_LS(_LS, this.n);
+	}
+	
+	public String toString() {
+		String out = "{\n";
+		for(LinkedList<Point> LSi : this.LS) {
+			out += Arrays.toString(LSi.toArray()) + ",\n";
+		}
+		return out + "}";
+	}
+}

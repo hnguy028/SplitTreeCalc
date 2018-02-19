@@ -1,0 +1,17 @@
+import java.util.LinkedList;
+
+import Objects.*;
+
+public class SplitTree {
+	public static void main(String[] args) {
+		
+	}
+	
+	public void FastSplitTree(LinkedList<Point> S, HyperRectangle R) {
+		
+	} 
+	
+	private void PartialSplitTree(LinkedList<Point> S, HyperRectangle R, Collection_LS LS) {
+		
+	}
+}

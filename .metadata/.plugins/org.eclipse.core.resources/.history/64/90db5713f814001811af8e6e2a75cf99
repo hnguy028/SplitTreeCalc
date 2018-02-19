@@ -1,0 +1,14 @@
+package DataStructures;
+
+import java.util.LinkedList;
+
+public class TreeNode {
+	TreeNode left, right;
+	
+	LinkedList<double[]> Ro;
+	LinkedList<double[]> R;
+	
+	public TreeNode() {
+		
+	}
+}
