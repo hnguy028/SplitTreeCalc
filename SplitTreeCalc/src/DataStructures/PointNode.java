@@ -10,6 +10,7 @@ public class PointNode{
 	
 	private double[] coords;
 	private int dimensions;
+	private int dimensionSortedOn;
 	
 	private ArrayList<PointNode> crossPointersLS;
 	private ArrayList<PointNode> crossPointersCLS;
@@ -23,9 +24,38 @@ public class PointNode{
 		
 		this.coords = _coords;
 		this.dimensions = this.coords.length;
+		this.dimensionSortedOn = -1;
 		
 		this.crossPointersLS = new ArrayList<PointNode>(dimensions);
 		this.crossPointersCLS = new ArrayList<PointNode>(dimensions);
+		
+		for(int i = 0; i < dimensions; i++) {
+			crossPointersLS.add(null);
+			crossPointersCLS.add(null);
+		}
+		
+		this.next = null;
+		this.prev = null;
+	}
+	
+	public PointNode(DoublyLinkedList dll, PointNode _p, double[] _coords, int _sortDim) {
+		
+		this.doublyLinkedList = dll;
+		
+		this.coords = _coords;
+		this.dimensions = this.coords.length;
+		this.dimensionSortedOn = _sortDim;
+		
+		this.crossPointersLS = new ArrayList<PointNode>(dimensions);
+		this.crossPointersCLS = new ArrayList<PointNode>(dimensions);
+		
+		for(int i = 0; i < dimensions; i++) {
+			crossPointersLS.add(null);
+			crossPointersCLS.add(null);
+		}
+		
+		this.crossPointersCLS.set(_sortDim, _p);
+		_p.setCrossPointersCLS(this, _sortDim);
 		
 		this.next = null;
 		this.prev = null;
@@ -35,6 +65,7 @@ public class PointNode{
 	public void setCrossPointers(ArrayList<PointNode> pointers) { crossPointersLS = pointers; }
 	public ArrayList<PointNode> getCrossPointers() { return crossPointersLS; }
 	
+	public void setCrossPointersCLS(PointNode pointer, int dimension) { crossPointersCLS.set(dimension, pointer); }
 	public void setCrossPointersCLS(ArrayList<PointNode> pointers) { crossPointersCLS = pointers; }
 	public ArrayList<PointNode> getCrossPointersCLS() { return crossPointersCLS; }
 	
@@ -47,6 +78,19 @@ public class PointNode{
 	public PointNode getPrev() { return this.prev; }
 	public void setPrev(PointNode _prev) { this.prev = _prev; }
 	public void setPrev_Next(PointNode _prev) { prev = _prev; _prev.next = this; }
+	
+	// this function traverses it's LS cross pointers to PointNode p' , and then traverses to p' s CLS cross pointers
+	public ArrayList<PointNode> getCopyCrossPointers() {
+		ArrayList<PointNode> res = new ArrayList<>(dimensions);
+		for(int i = 0; i < dimensions; i++) {
+			if(i != dimensionSortedOn) {
+				res.add(crossPointersLS.get(i).crossPointersCLS.get(i));
+			} else {
+				res.add(this);
+			}
+		}
+		return res;
+	}
 	
 	public void removeCrossPointers_LSi(int excludeDimension) {
 		for(int i = 0; i < crossPointersLS.size(); i++) {

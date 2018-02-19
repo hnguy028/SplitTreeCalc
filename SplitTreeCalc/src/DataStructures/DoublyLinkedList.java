@@ -12,6 +12,7 @@ public class DoublyLinkedList {
 	private int size;
 	private PointNodeComparator comparator;
 	private int dimensions;
+	private int dimensionRep;
 	
 	public DoublyLinkedList(int _dimensions) {
 		head = null;
@@ -19,6 +20,7 @@ public class DoublyLinkedList {
 		size = 0;
 		comparator = new PointNodeComparator();
 		dimensions = _dimensions;
+		dimensionRep = -1;
 	}
 	
 	public void add(double[] coords) {
@@ -44,8 +46,19 @@ public class DoublyLinkedList {
 		size++;
 	}
 	
-	public void add(double[] coords, int index) throws Exception {
-		throw new Exception("Should implement");
+	private void add_clone(PointNode p, double[] coords, int sortDimension) throws Exception {
+		
+		if(sortDimension < 0) { throw new Exception("sortDimension < 0 : Error"); }
+		
+		PointNode temp = new PointNode(this, p, coords, sortDimension);
+		if(head == null || tail == null) {
+			head = temp; 
+			tail = temp;
+		} else { 
+			tail.setNext_Prev(temp);
+			tail = temp;
+		}
+		size++;
 	}
 	
 	public PointNode get(int index) {
@@ -113,6 +126,10 @@ public class DoublyLinkedList {
 		return temp;
 	}
 	
+	public void setDimensionRep(int _rep) { dimensionRep = _rep; }
+	
+	public int getDimensionRep() { return dimensionRep; }
+	
 	public int dimensions() { return dimensions; }
 	
 	public void decrementSize() { size--; }
@@ -157,6 +174,27 @@ public class DoublyLinkedList {
 		return new DoublyLinkedListIterator(head);
 	}
 	
+	public void loadCrossPointersCLS() {
+		DoublyLinkedListIterator LS_iter = iterator();
+
+		while(LS_iter.hasNext()) {
+			PointNode p = LS_iter.next();
+			p.setCrossPointers(p.getCrossPointersCLS().get(dimensionRep).getCopyCrossPointers());
+		}
+	}
+	
+	// clone data structure with references
+	public DoublyLinkedList cloneReference() {
+		DoublyLinkedList dll = new DoublyLinkedList(this.dimensions);
+		dll.setDimensionRep(dimensionRep);
+		
+		PointNode temp = head;
+		
+		while(temp != null) { try { dll.add_clone(temp, temp.getCoordinates(), dimensionRep); } catch(Exception e) {System.out.println("Error"); } temp = temp.getNext(); }
+		
+		return dll;
+	}
+
 	public DoublyLinkedList clone() {
 		DoublyLinkedList dll = new DoublyLinkedList(this.dimensions);
 		

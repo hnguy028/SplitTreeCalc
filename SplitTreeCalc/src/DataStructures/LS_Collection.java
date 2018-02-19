@@ -46,7 +46,14 @@ public class LS_Collection {
 		}
 		
 		// sort each LSi by dimension
-		for(int i = 0; i < dimensionSize; i++) { LS.get(i).sort(i); }
+		for(int i = 0; i < dimensionSize; i++) { LS.get(i).sort(i); LS.get(i).setDimensionRep(i); }
+	}
+	
+	public LS_Collection(LinkedList<DoublyLinkedList> _LS, LinkedList<double[]> _pointSet, int _dimension) {
+		LS = _LS;
+		pointSet = _pointSet;
+		n = pointSet.size();
+		dimensionSize = _dimension;
 	}
 	
 	public DoublyLinkedList getLSi(int i) { return LS.get(i); }
@@ -66,22 +73,21 @@ public class LS_Collection {
 	}
 	
 	public LS_Collection clone() {
-		LS_Collection CLS = new LS_Collection(pointSet, dimensionSize);
 
-		// set crosspointers between LS and CLSi
+		LinkedList<DoublyLinkedList> _LS = new LinkedList<DoublyLinkedList>();
+		
+		// create copy of LSi	O(dn)
+		// and create cross pointers between LS and CLS
 		for(int i = 0; i < dimensionSize; i++) {
-			DoublyLinkedListIterator LS_iter = LS.get(i).iterator();
-			DoublyLinkedListIterator CLS_iter = CLS.getLSi(i).iterator();
-
-			while(LS_iter.hasNext()) {
-				PointNode p1 = LS_iter.next();
-				PointNode p2 = CLS_iter.next();
-				
-				p1.setCrossPointersCLS(p2.getCrossPointers());
-				p2.setCrossPointersCLS(p1.getCrossPointers());
-			}
+			_LS.add(LS.get(i).cloneReference());
 		}
-		return CLS;
+
+		// set cross pointers CLSi	O(2dn)
+		for(int i = 0; i < dimensionSize; i++) {
+			_LS.get(i).loadCrossPointersCLS();
+		}
+		
+		return new LS_Collection(_LS, pointSet, dimensionSize);
 	}
 	
 	public String toString() {

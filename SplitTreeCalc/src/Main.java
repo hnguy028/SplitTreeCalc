@@ -40,15 +40,14 @@ public class Main {
 		coll2.print();
 		System.out.println();
 	
-//		coll.getLS().get(0).get(1).removeCrossPointers_LSi(0);
-//		coll.getLS().get(0).get(1).removeCrossPointers_CLSi();;
-//		coll2.getLS().get(0).get(1).removeCrossPointers_LSi(0);
+		
+		//coll.getLS().get(0).get(1).removeCrossPointers_LSi(0);
+		//coll.getLS().get(0).get(1).removeCrossPointers_CLSi();;
+		//coll2.getLS().get(0).get(1).removeCrossPointers_LSi(0);
 		
 		DoublyLinkedListIterator iter = coll.getLS().get(0).iterator();
 		
-		while(iter.hasNext()) {
-			iter.next().removeCrossPointers_CLSi();
-		}
+		// todo try to remove pointnodes from copy and ls lists
 		
 		coll.print();
 		coll2.print();
