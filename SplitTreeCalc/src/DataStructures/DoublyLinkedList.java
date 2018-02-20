@@ -46,6 +46,7 @@ public class DoublyLinkedList {
 		size++;
 	}
 	
+	// private method used for cloning a doublylinkedlist
 	private void add_clone(PointNode p, double[] coords, int sortDimension) throws Exception {
 		
 		if(sortDimension < 0) { throw new Exception("sortDimension < 0 : Error"); }
@@ -126,7 +127,14 @@ public class DoublyLinkedList {
 		return temp;
 	}
 	
-	public void setDimensionRep(int _rep) { dimensionRep = _rep; }
+	public void setDimensionRep(int _rep) { 
+		dimensionRep = _rep;
+		
+		DoublyLinkedListIterator iter = iterator();
+		while(iter.hasNext()) {
+			iter.next().setSortDimension(dimensionRep);
+		}
+	}
 	
 	public int getDimensionRep() { return dimensionRep; }
 	
@@ -174,7 +182,7 @@ public class DoublyLinkedList {
 		return new DoublyLinkedListIterator(head);
 	}
 	
-	public void loadCrossPointersCLS() {
+	public void loadCrossPointersCLS_init() {
 		DoublyLinkedListIterator LS_iter = iterator();
 
 		while(LS_iter.hasNext()) {
@@ -183,8 +191,20 @@ public class DoublyLinkedList {
 		}
 	}
 	
-	// clone data structure with references
-	public DoublyLinkedList cloneReference() {
+	public void loadCrossPointersCLS() {
+		DoublyLinkedListIterator LS_iter = iterator();
+
+		while(LS_iter.hasNext()) {
+			PointNode p = LS_iter.next();
+			p.setCrossPointersCLS(p.getCrossPointersCLS().get(dimensionRep).getCrossPointers());
+		}
+	}
+	
+	// clone data structure with references - only used once sorted
+	public DoublyLinkedList cloneReference() throws Exception {
+		
+		if(dimensionRep < 0) { throw new Exception("DoublyLinkedList has not been sorted"); }
+		
 		DoublyLinkedList dll = new DoublyLinkedList(this.dimensions);
 		dll.setDimensionRep(dimensionRep);
 		
@@ -195,12 +215,12 @@ public class DoublyLinkedList {
 		return dll;
 	}
 
+	// deep copy
 	public DoublyLinkedList clone() {
 		DoublyLinkedList dll = new DoublyLinkedList(this.dimensions);
 		
 		PointNode temp = head;
 		
-		// temp.clone()
 		while(temp != null) { dll.add(temp.getCoordinates()); temp = temp.getNext(); }
 		
 		return dll;

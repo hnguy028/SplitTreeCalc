@@ -83,11 +83,9 @@ public class PointNode{
 	public ArrayList<PointNode> getCopyCrossPointers() {
 		ArrayList<PointNode> res = new ArrayList<>(dimensions);
 		for(int i = 0; i < dimensions; i++) {
-			if(i != dimensionSortedOn) {
+			//if(i != dimensionSortedOn) {
 				res.add(crossPointersLS.get(i).crossPointersCLS.get(i));
-			} else {
-				res.add(this);
-			}
+			//}
 		}
 		return res;
 	}
@@ -115,7 +113,13 @@ public class PointNode{
 	
 	public int getDimensions() { return dimensions; }
 	
+	public int getSortDimension() { return dimensionSortedOn; }
+	
+	public void setSortDimension(int _dim) { dimensionSortedOn = _dim; }
+	
 	public double getCoordinateValueAt(int _dimension) { return coords[_dimension]; }
+	
+	public PointNode getOccurrenceInCLS() { return crossPointersCLS.get(dimensionSortedOn); }
 	
 	public int compareTo(PointNode _point, int _dimension) {
 		if(_dimension >= _point.getDimensions() || _dimension >= dimensions) { throw new IndexOutOfBoundsException(); }
