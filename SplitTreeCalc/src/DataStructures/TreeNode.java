@@ -1,5 +1,7 @@
 package DataStructures;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
@@ -260,9 +262,6 @@ public class TreeNode {
 		}
 		
 		// Connect cross pointers between each subset list, and connect cross pointers between CLS and LS subset
-		
-		// TODO : error in obtaining cross reference from neighbours lists
-		// probably also error in obtaining cross references to/from CLS, and LS of each leaf node
 		for(TreeNode node : leafSets) { node.LSu.connectCrossPointers(CLS); node.savePointSet(); }
 	}
 
@@ -274,9 +273,15 @@ public class TreeNode {
 	
 	public void setRu(LinkedList<double[]> _Ru) { Ru = _Ru; }
 	
+	public LinkedList<double[]> getRu() { if(Ru == null) { return new LinkedList<double[]>(Arrays.asList(Su.getFirst().getCoordinates())); } return Ru; }
+	
 	public void setLeftChild(TreeNode node) { leftChild = node; }
 	
 	public void setRightChild(TreeNode node) { rightChild = node; }
+	
+	public boolean isLeafNode() { return leftChild == null && rightChild == null; }
+	
+	public int size() { return Su.size(); }
 	
 	public TreeNode getLeftChild() { return leftChild; }
 	
@@ -286,14 +291,13 @@ public class TreeNode {
 		String brk = "";
 		for(int i = 0; i < lvl; i++) { brk += "\t"; }
 		
-		String lChild = (leftChild == null) ? "[]" : leftChild.toString(lvl + 1);
-		String rChild = (rightChild == null) ? "[]" : rightChild.toString(lvl + 1);
+		String lChild = (leftChild == null) ? brk + "\tDepth" + (lvl + 1) + ": []" : leftChild.toString(lvl + 1);
+		String rChild = (rightChild == null) ? brk + "\tDepth" + (lvl + 1) + ": []" : rightChild.toString(lvl + 1);
 
-		String output = brk + Su.toString() + " :\n\t" + brk + lChild + "\n\t" + brk + rChild + "\n";
-//		String output = brk + LSu.toString() + " :\n\t" + brk + lChild + "\n\t" + brk + rChild + "\n";
+		String output = brk + "Depth" + lvl + ": " + Su.toString() + " :\n" + lChild + "\n" + rChild + "\n";// + "Depth" + lvl + ":" + getRu() + "--";
 
 		return output;
 	}
 	
-	public void print() { System.out.println(toString(0)); }
+	public void print() { System.out.print(toString(0)); }
 }

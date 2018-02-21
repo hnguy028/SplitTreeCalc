@@ -3,8 +3,6 @@ package DataStructures;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.print.attribute.standard.RequestingUserName;
-
 public class PointNode{
 	
 	private DoublyLinkedList doublyLinkedList;

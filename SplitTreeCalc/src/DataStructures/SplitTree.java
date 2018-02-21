@@ -1,15 +1,6 @@
-import java.util.ArrayList;
+package DataStructures;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.event.DocumentListener;
-
-import DataStructures.DoublyLinkedList;
-import DataStructures.DoublyLinkedListIterator;
-import DataStructures.HyperRectangle;
-import DataStructures.LS_Collection;
-import DataStructures.PointNode;
-import DataStructures.TreeNode;
 
 public class SplitTree {
 	
@@ -32,11 +23,27 @@ public class SplitTree {
 		preProcess();
 		
 		root = new TreeNode(Ro, LS);
-//		treeNode.partialSplitTree();
-	} 
+		
+		recursiveCall(root);
+	}
+	
+	// DFS style
+	private void recursiveCall(TreeNode node) {
+		
+		if(node.size() <= 1) {
+			// TODO : do something
+		} else {
+		
+			if(node.isLeafNode()) { node.partialSplitTree(); }
+		
+			recursiveCall(node.getLeftChild());
+			recursiveCall(node.getRightChild());
+			
+		}
+	}
 	
 	// Used to find the initial rectangle that bounds the point set
-	public static LinkedList<double[]> computeBoundingBox(LS_Collection LS) {
+	private LinkedList<double[]> computeBoundingBox(LS_Collection LS) {
 		int dimensions = LS.getDimensionSize();
 		LinkedList<double[]> R = new LinkedList<double[]>();
 		
@@ -51,17 +58,19 @@ public class SplitTree {
 		return R;
 	}
 	
-	public void preProcess() {
+	private void preProcess() {
 		// create d, linkedlists from point set each sorted wrt to the dimension
 		LS = new LS_Collection(Su, dimensions);
 		
+		// if rectangle is not given, the initial rectangle is set to the bounding box
 		if(Ro == null) {
 			Ro = computeBoundingBox(LS);
 		}
 	}
 	
 	
-	public void splitTreeCardOne(List<PointNode> S, HyperRectangle R) {
+	/* Probably needs to be implemented in the TreeNode class, also need to handle partialSplitTree call when LSu is size <= 1 */
+	private void splitTreeCardOne(List<PointNode> S, HyperRectangle R) {
 		// if |S| == 1
 		
 		
@@ -78,4 +87,6 @@ public class SplitTree {
 		
 		// return u;
 	}
+	
+	public void print() { root.print(); }
 }
