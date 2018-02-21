@@ -84,9 +84,9 @@ public class LS_Collection {
 	 * Assuming that all points in _LS and LS have a connection to their equivalent point node in each collection 
 	 */
 	public void connectCrossPointers(LS_Collection _LS) {
-		// set cross pointers between _LS and LS O(2dn)
+		// set cross pointers between dimensions of LS
 		for(int i = 0; i < dimensionSize; i++) {
-			_LS.getLSi(i).loadCrossPointersCLS_init();
+			LS.get(i).loadCrossPointersCLS_init();
 		}
 		
 		// At this point we have 2 collections LS and _LS
@@ -94,10 +94,10 @@ public class LS_Collection {
 		// (2) Each point in the LS has one pointer to its node in _LS (and vice versa)
 		
 		// connect the remaining cross pointers between LS and CLS
-		for(int i = 0; i < dimensionSize; i++) {
-			_LS.getLSi(i).loadCrossPointersCLS();
-			LS.get(i).loadCrossPointersCLS();
-		}
+//		for(int i = 0; i < dimensionSize; i++) {
+//			_LS.getLSi(i).loadCrossPointersCLS();
+//			LS.get(i).loadCrossPointersCLS();
+//		}
 	}
 	
 	public LS_Collection clone() {

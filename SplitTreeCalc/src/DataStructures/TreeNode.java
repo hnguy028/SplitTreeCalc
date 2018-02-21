@@ -185,7 +185,7 @@ public class TreeNode {
 		wNode.step2();
 		
 		vNode.setLSu(new LS_Collection(LSu.getDimensionSize()));
-	} 
+	}
 	
 	private void step5(PointNode q, int xi, double h, int size_) {
 		LinkedList<double[]> R1 = new LinkedList<double[]>();
@@ -263,7 +263,7 @@ public class TreeNode {
 		
 		// TODO : error in obtaining cross reference from neighbours lists
 		// probably also error in obtaining cross references to/from CLS, and LS of each leaf node
-		for(TreeNode node : leafSets) { node.LSu.connectCrossPointers(LSu); node.savePointSet(); }
+		for(TreeNode node : leafSets) { node.LSu.connectCrossPointers(CLS); node.savePointSet(); }
 	}
 
 	private void setLSu(LS_Collection _LS) { LSu = _LS; }
@@ -289,8 +289,8 @@ public class TreeNode {
 		String lChild = (leftChild == null) ? "[]" : leftChild.toString(lvl + 1);
 		String rChild = (rightChild == null) ? "[]" : rightChild.toString(lvl + 1);
 
-//		String output = brk + Su.toString() + " :\n\t" + brk + lChild + "\n\t" + brk + rChild + "\n";
-		String output = brk + LSu.toString() + " :\n\t" + brk + lChild + "\n\t" + brk + rChild + "\n";
+		String output = brk + Su.toString() + " :\n\t" + brk + lChild + "\n\t" + brk + rChild + "\n";
+//		String output = brk + LSu.toString() + " :\n\t" + brk + lChild + "\n\t" + brk + rChild + "\n";
 
 		return output;
 	}

@@ -43,12 +43,28 @@ public class Main {
 		
 		TreeNode treeNode = new TreeNode(computeBoundingBox(coll), coll);
 		treeNode.partialSplitTree();
-		System.out.println(treeNode.getRightChild().CLS);
-		System.out.println(treeNode.getRightChild().LSu.getLSi(0).get(0).getCrossPointersCLS());
-		//treeNode.getLeftChild().partialSplitTree();
+//		System.out.println(treeNode.getRightChild().CLS);
+//		System.out.println(treeNode.getRightChild().LSu.getLSi(0).get(0).getCrossPointersCLS());
+		treeNode.getLeftChild().partialSplitTree();
+		treeNode.getRightChild().partialSplitTree();
+		System.out.println("---------------------------------");
 		treeNode.print();
+//		DoublyLinkedListIterator iterator = treeNode.CLS.getLSi(0).iterator();
+//		
+//		while(iterator.hasNext()) {
+//			System.out.println(iterator.next().getCrossPointers());
+//		}
+//		
+//		System.out.println();
+//		DoublyLinkedListIterator iterator2 = treeNode.getLeftChild().LSu.getLSi(0).iterator();
+//		
+//		while(iterator2.hasNext()) {
+//			System.out.println(iterator2.next().getCrossPointersCLS());
+//		}
+		
 	}
 	
+	// Used to find the initial rectangle that bounds the point set
 	public static LinkedList<double[]> computeBoundingBox(LS_Collection LS) {
 		int dimensions = LS.getDimensionSize();
 		LinkedList<double[]> R = new LinkedList<double[]>();
@@ -71,10 +87,6 @@ public class Main {
 		
 		// Create a node u, which will be the root of the final partial split tree
 		//TreeNode uNode = new TreeNode(S, R.getRo(), LS);
-	}
-	
-	private void step3() {
-		
 	}
 	
 	public void preProcess(LinkedList<double[]> _pointSet, int _dimension) {

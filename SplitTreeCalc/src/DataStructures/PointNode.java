@@ -137,7 +137,7 @@ public class PointNode{
 		return -1;
 	}
 	
-//	public String toString() { return Arrays.toString(coords).replace("[", "(").replace("]", ")"); }
-//	
-//	public void printString() { System.out.println(Arrays.toString(coords).replace("[", "(").replace("]", ")")); }
+	public String toString() { return Arrays.toString(coords).replace("[", "(").replace("]", ")"); }
+	
+	public void printString() { System.out.println(Arrays.toString(coords).replace("[", "(").replace("]", ")")); }
 }

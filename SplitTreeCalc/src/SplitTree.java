@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.event.DocumentListener;
 
+import DataStructures.DoublyLinkedList;
 import DataStructures.DoublyLinkedListIterator;
 import DataStructures.HyperRectangle;
 import DataStructures.LS_Collection;
@@ -11,128 +13,69 @@ import DataStructures.TreeNode;
 
 public class SplitTree {
 	
+	
+	
 	LinkedList<double[]> Su;
 	LinkedList<double[]> Ro;
-	LinkedList<double[]> Ru;
-	LS_Collection CLS;
-	LS_Collection LSu;
-	int size;
 	
-	TreeNode uNode;
+	LS_Collection LS;
 	
-	//public void FastSplitTree(LinkedList<Point> S, HyperRectangle R) {} 
+	int dimensions;
 	
-	// private void partialSplitTree(LinkedList<double[]> _S, LinkedList<double[]> _R, LS_Collection _LS) {
-	private TreeNode partialSplitTree(LinkedList<double[]> _R, LS_Collection _LS) {
-//		Su = _S;
-		Ro = _R;
-		LSu = _LS;
+	TreeNode root;
+	
+	public void FastSplitTree(LinkedList<double[]> S, LinkedList<double[]> R, int _dimensions) {
+		Su = S;
+		Ro = R;
+		dimensions = _dimensions;
 		
-		// Step 1: Make copies CLSi of lists LSi
-		CLS = _LS.clone();
-		size = _LS.getLSi(0).size();
+		preProcess();
 		
-		// Create a node u, which will be the root of the final partial split tree
-		uNode = null;//new TreeNode(null, Ro, _LS);
+		root = new TreeNode(Ro, LS);
+//		treeNode.partialSplitTree();
+	} 
+	
+	// Used to find the initial rectangle that bounds the point set
+	public static LinkedList<double[]> computeBoundingBox(LS_Collection LS) {
+		int dimensions = LS.getDimensionSize();
+		LinkedList<double[]> R = new LinkedList<double[]>();
 		
-		step2();
-		
-		return uNode;
+		for(int i = 0; i < dimensions; i ++) {
+			DoublyLinkedList LSi = LS.getLSi(i);
+			
+			double _min = LSi.getFirst().getCoordinateValueAt(i);
+			double _max = LSi.getLast().getCoordinateValueAt(i);
+			
+			R.add(new double[] {_min, _max});
+		}
+		return R;
 	}
 	
-	private void step2() {
-		if(size <= Su.size() / 2.0) {
-			DoublyLinkedListIterator iter = null;
-			
-			// probably only need to do one dimension since we are accessing the crosspointers for CLSi
-			for(int i = 0; i < LSu.getDimensionSize(); i++) {
-				iter = LSu.getLSi(i).iterator();
-				
-				while(iter.hasNext()) {
-					ArrayList<PointNode> crossPointers = iter.next().getCrossPointersCLS();
-					// for(PointNode p : crossPointers) { p.addPointerToNode(u); }
-				}
-			}
-			
-			step6();
-		} else { // size > Su.size / 2.0
-			step3();
+	public void preProcess() {
+		// create d, linkedlists from point set each sorted wrt to the dimension
+		LS = new LS_Collection(Su, dimensions);
+		
+		if(Ro == null) {
+			Ro = computeBoundingBox(LS);
 		}
 	}
 	
-	private void step3() {
-		// Compute bounding box
-		HyperRectangle rectangle = new HyperRectangle(LSu, Ro);
-		
-		// set R(u) = R(Su)
-		Ru = rectangle.getR();
-		
-		// find index i such that Lmax(R(u)) = Li(R(u))
-		int xi = rectangle.getHyperplaneIndex();
-		double h = rectangle.getHyperplanePoint();
-		
-		// Run the described procedure
-		step3_procedure(xi, h);
-	}
 	
-	private void step3_procedure(int xi, double h) {
-		PointNode p = LSu.getLSi(xi).getFirst();
-		PointNode p_ = p.getNext();
+	public void splitTreeCardOne(List<PointNode> S, HyperRectangle R) {
+		// if |S| == 1
 		
-		PointNode q = LSu.getLSi(xi).getLast();
-		PointNode q_ = q.getPrev();
 		
-		int size_ = 1;
+		// create a node u
+		// Node u;
 		
-		while(p_.getCoordinateValueAt(xi) <= h && q_.getCoordinateValueAt(xi) >= h) {
-			p = p_;
-			p_ = p_.getNext();
-			
-			q = q_;
-			q_ = q_.getNext();
-			
-			size_++;
-		}
+		// bounding box R(u) = R(S)
 		
-		if(p_.getCoordinateValueAt(xi) > h) {
-			step4(xi, h);
-		} else { // p_.getCoordinateValueAt(xi) < h
-			step5();
-		}
+		// rectangle containing bounding box Ro(u) = R
+		
+		// Store with u the only point of S, Ro(u), R(u)
+		
+		// set u's pointers to null
+		
+		// return u;
 	}
-	
-	private void step4(int xi, double h) {
-		TreeNode vNode = new TreeNode();
-		TreeNode wNode = new TreeNode();
-		
-//		uNode.setLeftChild(vNode);
-//		uNode.setRightChild(wNode);
-		
-		LinkedList<double[]> R1 = new LinkedList<double[]>();
-		LinkedList<double[]> R2 = new LinkedList<double[]>();
-		
-		for(int i = 0; i < Ru.size(); i++) {
-			if(xi == i) {
-				R1.add(new double[] {Ru.get(i)[0], h});
-				R2.add(new double[] {h, Ru.get(i)[1]});
-			} else {
-				R1.add(Ru.get(i));
-				R2.add(Ru.get(i));
-			}
-		}
-		
-//		vNode.setRo(R1);
-//		wNode.setRo(R2);
-		
-	}
-	
-	private void step5() {
-		
-	}
-	
-	private void step6() {
-		
-	}
-	//private void SplitTreeOne(LinkedList<Point> S, HyperRectangle R, Collection_LS LS) {
-		// if |S| == 1 }
 }
