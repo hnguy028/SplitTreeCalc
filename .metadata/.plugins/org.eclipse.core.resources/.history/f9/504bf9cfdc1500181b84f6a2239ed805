@@ -1,0 +1,111 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+import DataStructures.*;
+
+public class Main {
+	public static void main(String[] args) {
+		int dimension_size = 2;
+
+		double[] a = new double[]{0.0, 0.0};
+		double[] b = new double[]{1.0, 10.0}; 
+		double[] c = new double[]{3.0/2.0, 1.0}; 
+		double[] d = new double[]{2.0, 5.0/2.0}; 
+		double[] e = new double[]{8.0, 7.0}; 
+		double[] f = new double[]{11.0, 2.0};
+		double[] g = new double[]{11.0, 9.0};
+		double[] h = new double[]{12.0 ,0.0};
+		
+		LinkedList<double[]> pointSet = new LinkedList<double[]>(Arrays.asList(a, b, c, d, e, f, g, h));
+		
+		DoublyLinkedList LS1 = new DoublyLinkedList(2);
+		LS1.add(a);
+		LS1.add(b);
+		LS1.add(c);
+		LS1.add(d);
+		LS1.add(e);
+		LS1.add(f);
+		LS1.add(g);
+		LS1.add(h);
+		
+		DoublyLinkedList LS2 = LS1.clone();
+		
+		LS_Collection coll = new LS_Collection(pointSet, 2);
+		LS_Collection coll2 = coll.clone();
+		
+		coll.print();
+		coll2.print();
+		System.out.println();
+	
+		
+		//coll.getLS().get(0).get(1).removeCrossPointers_LSi(0);
+		//coll.getLS().get(0).get(1).removeCrossPointers_CLSi();
+		//coll2.getLS().get(0).get(1).removeCrossPointers_LSi(0);
+		//coll2.getLS().get(0).get(1).removeCrossPointers_CLSi();
+		
+		for(DoublyLinkedList dd : coll2.getLS()) {
+			DoublyLinkedListIterator iterator = dd.iterator();
+			while(iterator.hasNext()) {
+				System.out.println(iterator.next().getCrossPointers());
+			}
+		}
+		
+//		for(PointNode p : coll.getLS().get(0).get(1).getCrossPointersCLS().get(0).getCrossPointers()) {
+//			p.printString();
+//		}
+//		coll2.getLS().get(0).get(1).getCrossPointersCLS().get(1).printString();
+		//coll.getLS().get(0).get(1).getCrossPointersCLS().get(0).getCrossPointers().get(0).getCrossPointers().get(0).printString();
+//		for(PointNode pointNode :coll.getLS().get(1).get(1).getCrossPointersCLS()) {
+//			pointNode.printString();
+//		}
+//		DoublyLinkedListIterator iter = coll.getLS().get(0).iterator();
+		
+		// todo try to remove pointnodes from copy and ls lists
+		
+		System.out.println();
+		coll.print();
+		coll2.print();
+		
+	}
+	
+	public void partialSplitTree(LinkedList<double[]> S, HyperRectangle R, LS_Collection LS) {
+		// Step 1: Make copies CLSi of lists LSi
+		LS_Collection CLS = LS.clone();
+		int size = S.size();
+		
+		// Create a node u, which will be the root of the final partial split tree
+		TreeNode uNode = new TreeNode(S, R.getRo(), LS);
+	}
+	
+	private void step3() {
+		
+	}
+	
+	public void preProcess(LinkedList<double[]> _pointSet, int _dimension) {
+		// create d, linkedlists from point set each sorted wrt to the dimension
+		LS_Collection LS = new LS_Collection(_pointSet, _dimension);
+		LS_Collection CLS = LS.clone();
+	}
+	
+	
+	public void splitTreeCardOne(List<PointNode> S, HyperRectangle R) {
+		// if |S| == 1
+		
+		
+		// create a node u
+		// Node u;
+		
+		// bounding box R(u) = R(S)
+		
+		// rectangle containing bounding box Ro(u) = R
+		
+		// Store with u the only point of S, Ro(u), R(u)
+		
+		// set u's pointers to null
+		
+		// return u;
+	}
+}

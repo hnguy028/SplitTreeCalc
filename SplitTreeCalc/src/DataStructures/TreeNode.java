@@ -260,6 +260,9 @@ public class TreeNode {
 		}
 		
 		// Connect cross pointers between each subset list, and connect cross pointers between CLS and LS subset
+		
+		// TODO : error in obtaining cross reference from neighbours lists
+		// probably also error in obtaining cross references to/from CLS, and LS of each leaf node
 		for(TreeNode node : leafSets) { node.LSu.connectCrossPointers(LSu); node.savePointSet(); }
 	}
 
