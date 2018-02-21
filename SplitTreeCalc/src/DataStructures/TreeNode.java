@@ -1,25 +1,25 @@
 package DataStructures;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 public class TreeNode {
-	TreeNode leftChild, rightChild;
+	private	TreeNode leftChild, rightChild;
 	
 	// Pointset Su
-	DoublyLinkedList Su;
+	private DoublyLinkedList Su;
 	
 	// Rectangle
-	LinkedList<double[]> Ro;
+	private	LinkedList<double[]> Ro;
 	
 	// Bounding Rectangle
-	LinkedList<double[]> Ru;
+	private LinkedList<double[]> Ru;
 	
 	// Collection of linkedlists of Su, sorted by dimension 
-	LS_Collection LSu;
-	LS_Collection CLS;
+	public LS_Collection LSu;
+	public LS_Collection CLS;
 	
-	int size;
+	private int n;
 	
 	public TreeNode() {
 		leftChild = null;
@@ -31,10 +31,10 @@ public class TreeNode {
 		leftChild = null;
 		rightChild = null;
 		
-		Su = _LS.getLSi(0).clone();
 		Ro = _Ro;
 		LSu = _LS;
-		size = Su.size();
+		Su = _LS.getLSi(0).clone();
+		n = Su.size();
 	}
 	
 	public TreeNode(LinkedList<double[]> _Ro) {
@@ -42,6 +42,7 @@ public class TreeNode {
 		rightChild = null; 
 		
 		Ro = _Ro;
+		n = -1;
 	}
 	
 	public void partialSplitTree() {
@@ -51,33 +52,45 @@ public class TreeNode {
 		} else {
 			throw new NullPointerException("HyperRectangle and/or LSi is empty");
 		}
+		
+		step6();
 	}
 	
 	private void step1() {
 		// Step 1: Make copies CLSi of lists LSi
 		CLS = LSu.clone();
 		
-		Su = LSu.getLSi(0);
-		size = Su.size();
+		Su = LSu.getLSi(0).clone();
+		n = Su.size();
 		
 		step2();
 	}
 	
+	private void savePointSet() {
+		// if(Su != null) {}
+		Su = LSu.getLSi(0).clone();
+	}
+	
 	private void step2() {
-		if(size <= Su.size() / 2.0) {
-			DoublyLinkedListIterator iter = null;
+		savePointSet();
+		int size = LSu.getLSi(0).size();
+		if (n < 0) { n = CLS.getLSi(0).size(); }
+		
+		if(size <= n / 2.0) {	
+			DoublyLinkedListIterator walk = LSu.getLSi(0).iterator();
+			PointNode z;
 			
-			// probably only need to do one dimension since we are accessing the crosspointers for CLSi
-			for(int i = 0; i < LSu.getDimensionSize(); i++) {
-				iter = LSu.getLSi(i).iterator();
-				
-				while(iter.hasNext()) {
-					ArrayList<PointNode> crossPointers = iter.next().getCrossPointersCLS();
-					// for(PointNode p : crossPointers) { p.addPointerToNode(u); }
+			while(walk.hasNext()) {
+				z = walk.next();
+				for(PointNode cls_occurrence : z.getCrossPointersCLS()) {
+					cls_occurrence.storeTreeNodePointer(this);	
 				}
 			}
 			
-			step6();
+			LSu = new LS_Collection(LSu.getDimensionSize());
+			
+			// step6 will be called when by recursion after this step is complete
+			
 		} else { // size > Su.size / 2.0
 			step3();
 		}
@@ -112,25 +125,19 @@ public class TreeNode {
 			p_ = p_.getNext();
 			
 			q = q_;
-			q_ = q_.getNext();
+			q_ = q_.getPrev();
 			
 			size_++;
 		}
 		
 		if(p_.getCoordinateValueAt(xi) > h) {
-			step4(xi, h);
+			step4(p, xi, h, size_);
 		} else { // p_.getCoordinateValueAt(xi) < h
-			step5();
+			step5(q, xi, h, size_);
 		}
 	}
 	
-	private void step4(int xi, double h) {
-		TreeNode vNode = new TreeNode();
-		TreeNode wNode = new TreeNode();
-		
-		setLeftChild(vNode);
-		setRightChild(wNode);
-		
+	private void step4(PointNode p, int xi, double h, int size_) {
 		LinkedList<double[]> R1 = new LinkedList<double[]>();
 		LinkedList<double[]> R2 = new LinkedList<double[]>();
 		
@@ -144,18 +151,121 @@ public class TreeNode {
 			}
 		}
 		
-		vNode.setRo(R1);
-		wNode.setRo(R2);
+		TreeNode vNode = new TreeNode(R1);
+		TreeNode wNode = new TreeNode(R2);
 		
+		setLeftChild(vNode);
+		setRightChild(wNode);
+		
+		// 4.1, 4.2, 4.3
+		DoublyLinkedListIterator walk = LSu.getLSi(xi).iterator();
+		PointNode z;
+		
+		boolean pReached = false;
+		while(walk.hasNext()) {
+			z = walk.next();
+			
+			if(!pReached) {
+				// stop after p is found
+				if (z == p) { pReached = true; }
+			
+				// 4.1
+				for(PointNode cls_occurrence : z.getCrossPointersCLS()) {
+					cls_occurrence.storeTreeNodePointer(vNode);	
+				}
+			
+				// 4.2
+				z.removeCrossPointers_LSi();
+			
+				// 4.3
+				z.remove();
+			}
+		}
+		wNode.setLS(LSu, CLS);
+		wNode.step2();
+		
+		vNode.setLSu(new LS_Collection(LSu.getDimensionSize()));
+	} 
+	
+	private void step5(PointNode q, int xi, double h, int size_) {
+		LinkedList<double[]> R1 = new LinkedList<double[]>();
+		LinkedList<double[]> R2 = new LinkedList<double[]>();
+		
+		for(int i = 0; i < Ru.size(); i++) {
+			if(xi == i) {
+				R1.add(new double[] {Ru.get(i)[0], h});
+				R2.add(new double[] {h, Ru.get(i)[1]});
+			} else {
+				R1.add(Ru.get(i));
+				R2.add(Ru.get(i));
+			}
+		}
+		
+		TreeNode vNode = new TreeNode(R1);
+		TreeNode wNode = new TreeNode(R2);
+		
+		setLeftChild(vNode);
+		setRightChild(wNode);
+		
+		// 5.1, 5.2, 5.3
+		DoublyLinkedListIterator walk = LSu.getLSi(xi).iterator_reverse();
+		PointNode z;
+		
+		boolean qReached = false;
+		while(walk.hasNext()) {
+			z = walk.next();
+			
+			if(!qReached) {
+				// stop after p is found
+				if (z == q) { qReached = true; }
+			
+				// 5.1
+				for(PointNode cls_occurrence : z.getCrossPointersCLS()) {
+					cls_occurrence.storeTreeNodePointer(wNode);	
+				}
+			
+				// 5.2
+				z.removeCrossPointers_LSi();
+			
+				// 5.3
+				z.remove();
+			}
+		}
+		vNode.setLS(LSu, CLS);
+		vNode.step2();
+		
+		wNode.setLSu(new LS_Collection(LSu.getDimensionSize()));
+
 	}
 	
-	private void step5() {
-		
-	}
-	
+	// only called at the root of the partial split tree, where all points in CLS have a pointer to a lead node
 	private void step6() {
+		DoublyLinkedListIterator iterator;
+		PointNode pointNode;
+		int dimensions = CLS.getDimensionSize();
 		
+		LinkedHashSet<TreeNode> leafSets = new LinkedHashSet<TreeNode>();
+		
+		for(int i = 0; i < dimensions; i++) {
+			iterator = CLS.getLSi(i).iterator();
+			
+			while(iterator.hasNext()) {
+				pointNode = iterator.next();
+				
+				// store reference to all leaf LSi sets
+				leafSets.add(pointNode.getTreeNode());
+				
+				pointNode.getTreeNode().LSu.append(pointNode, i);
+			}
+		}
+		
+		// Connect cross pointers between each subset list, and connect cross pointers between CLS and LS subset
+		for(TreeNode node : leafSets) { node.LSu.connectCrossPointers(LSu); node.savePointSet(); }
 	}
+
+	private void setLSu(LS_Collection _LS) { LSu = _LS; }
+	
+	private void setLS(LS_Collection _LS, LS_Collection _CLS) { LSu = _LS; CLS = _CLS; }
 	
 	public void setRo(LinkedList<double[]> _Ro) { Ro = _Ro; }
 	
@@ -168,4 +278,19 @@ public class TreeNode {
 	public TreeNode getLeftChild() { return leftChild; }
 	
 	public TreeNode getRightChild() { return rightChild; }
+	
+	public String toString(int lvl) {
+		String brk = "";
+		for(int i = 0; i < lvl; i++) { brk += "\t"; }
+		
+		String lChild = (leftChild == null) ? "[]" : leftChild.toString(lvl + 1);
+		String rChild = (rightChild == null) ? "[]" : rightChild.toString(lvl + 1);
+
+//		String output = brk + Su.toString() + " :\n\t" + brk + lChild + "\n\t" + brk + rChild + "\n";
+		String output = brk + LSu.toString() + " :\n\t" + brk + lChild + "\n\t" + brk + rChild + "\n";
+
+		return output;
+	}
+	
+	public void print() { System.out.println(toString(0)); }
 }

@@ -33,7 +33,7 @@ public class SplitTree {
 		size = _LS.getLSi(0).size();
 		
 		// Create a node u, which will be the root of the final partial split tree
-		uNode = new TreeNode(null, Ro, _LS);
+		uNode = null;//new TreeNode(null, Ro, _LS);
 		
 		step2();
 		
@@ -105,8 +105,8 @@ public class SplitTree {
 		TreeNode vNode = new TreeNode();
 		TreeNode wNode = new TreeNode();
 		
-		uNode.setLeftChild(vNode);
-		uNode.setRightChild(wNode);
+//		uNode.setLeftChild(vNode);
+//		uNode.setRightChild(wNode);
 		
 		LinkedList<double[]> R1 = new LinkedList<double[]>();
 		LinkedList<double[]> R2 = new LinkedList<double[]>();
@@ -121,8 +121,8 @@ public class SplitTree {
 			}
 		}
 		
-		vNode.setRo(R1);
-		wNode.setRo(R2);
+//		vNode.setRo(R1);
+//		wNode.setRo(R2);
 		
 	}
 	

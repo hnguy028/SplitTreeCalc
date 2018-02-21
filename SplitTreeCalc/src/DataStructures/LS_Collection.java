@@ -6,13 +6,11 @@ import java.util.LinkedList;
 public class LS_Collection {
 	private LinkedList<DoublyLinkedList> LS;	// LSi
 	private LinkedList<double[]> pointSet;
-	private int n;						// |pointSet|
 	private int dimensionSize;
 	
 	public LS_Collection(LinkedList<double []> _pointSet, int _dimension) {
 		LS = new LinkedList<DoublyLinkedList>();
 		pointSet = _pointSet;
-		n = pointSet.size();
 		dimensionSize = _dimension;
 		
 		DoublyLinkedList temp = new DoublyLinkedList(dimensionSize);
@@ -52,8 +50,22 @@ public class LS_Collection {
 	public LS_Collection(LinkedList<DoublyLinkedList> _LS, LinkedList<double[]> _pointSet, int _dimension) {
 		LS = _LS;
 		pointSet = _pointSet;
-		n = pointSet.size();
 		dimensionSize = _dimension;
+	}
+	
+	public LS_Collection(int _dimension) {
+		dimensionSize = _dimension;
+		LS = new LinkedList<DoublyLinkedList>();
+		
+		for(int i = 0; i < dimensionSize; i++) {
+			DoublyLinkedList ls = new DoublyLinkedList(dimensionSize);
+			ls.setDimensionRep(i);
+			
+			LS.add(ls);
+		}
+		
+		// not needed
+		pointSet = new LinkedList<double[]>();
 	}
 	
 	public DoublyLinkedList getLSi(int i) { return LS.get(i); }
@@ -62,14 +74,30 @@ public class LS_Collection {
 	
 	public int getDimensionSize() { return this.dimensionSize; }
 	
-	// Given the dimension of the hyperplane
-	public void splitCollection(int hyperplaneIndex) {
-			
+	public void append(PointNode p, int dimension) {
+		try { 
+			LS.get(dimension).add(new PointNode(LS.get(dimension), p, p.getCoordinates(), dimension));
+		} catch (Exception e) { e.printStackTrace(); }
 	}
+	
+	/*
+	 * Assuming that all points in _LS and LS have a connection to their equivalent point node in each collection 
+	 */
+	public void connectCrossPointers(LS_Collection _LS) {
+		// set cross pointers between _LS and LS O(2dn)
+		for(int i = 0; i < dimensionSize; i++) {
+			_LS.getLSi(i).loadCrossPointersCLS_init();
+		}
 		
-	// Remove 
-	public void remove() {
-			
+		// At this point we have 2 collections LS and _LS
+		// (1) They have internal cross pointers between each LSi, where 1 >= i >= dimension
+		// (2) Each point in the LS has one pointer to its node in _LS (and vice versa)
+		
+		// connect the remaining cross pointers between LS and CLS
+		for(int i = 0; i < dimensionSize; i++) {
+			_LS.getLSi(i).loadCrossPointersCLS();
+			LS.get(i).loadCrossPointersCLS();
+		}
 	}
 	
 	public LS_Collection clone() {

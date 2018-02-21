@@ -1,10 +1,7 @@
 package DataStructures;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedList;
-
-import javax.lang.model.type.NullType;
 
 public class DoublyLinkedList {
 	private PointNode head;
@@ -127,6 +124,9 @@ public class DoublyLinkedList {
 		return temp;
 	}
 	
+	public void incrementHead() { head = head.getNext(); }
+	public void decrementTail() { tail = tail.getPrev(); }
+	
 	public void setDimensionRep(int _rep) { 
 		dimensionRep = _rep;
 		
@@ -181,7 +181,14 @@ public class DoublyLinkedList {
 	public DoublyLinkedListIterator iterator() {
 		return new DoublyLinkedListIterator(head);
 	}
+
+	public DoublyLinkedListIterator iterator_reverse() {
+		return new DoublyLinkedListIterator(tail, true);
+	}
 	
+	/*
+	 * Set cross pointers for LSi, 0 < i <= dimension
+	 */
 	public void loadCrossPointersCLS_init() {
 		DoublyLinkedListIterator LS_iter = iterator();
 

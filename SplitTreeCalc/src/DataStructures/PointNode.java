@@ -2,7 +2,8 @@ package DataStructures;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
+
+import javax.print.attribute.standard.RequestingUserName;
 
 public class PointNode{
 	
@@ -17,6 +18,8 @@ public class PointNode{
 	
 	private PointNode next;
 	private PointNode prev;
+	
+	private TreeNode treeNode;
 	
 	public PointNode(DoublyLinkedList dll, double[] _coords) {
 		
@@ -61,6 +64,9 @@ public class PointNode{
 		this.prev = null;
 	}
 	
+	public void storeTreeNodePointer(TreeNode node) { treeNode = node; }
+	public TreeNode getTreeNode() { return treeNode; }
+	
 	public void setCrossPointer(PointNode pointer, int dimension) { crossPointersLS.set(dimension, pointer); }
 	public void setCrossPointers(ArrayList<PointNode> pointers) { crossPointersLS = pointers; }
 	public ArrayList<PointNode> getCrossPointers() { return crossPointersLS; }
@@ -68,8 +74,6 @@ public class PointNode{
 	public void setCrossPointersCLS(PointNode pointer, int dimension) { crossPointersCLS.set(dimension, pointer); }
 	public void setCrossPointersCLS(ArrayList<PointNode> pointers) { crossPointersCLS = pointers; }
 	public ArrayList<PointNode> getCrossPointersCLS() { return crossPointersCLS; }
-	
-	//public int getIndexAt(int dimension) { return LS_indices[dimension]; }
 	
 	public PointNode getNext() { return next; }
 	public void setNext(PointNode _next) { next = _next; }
@@ -83,30 +87,34 @@ public class PointNode{
 	public ArrayList<PointNode> getCopyCrossPointers() {
 		ArrayList<PointNode> res = new ArrayList<>(dimensions);
 		for(int i = 0; i < dimensions; i++) {
-			//if(i != dimensionSortedOn) {
-				res.add(crossPointersLS.get(i).crossPointersCLS.get(i));
-			//}
+			res.add(crossPointersLS.get(i).crossPointersCLS.get(i));
 		}
 		return res;
 	}
 	
-	public void removeCrossPointers_LSi(int excludeDimension) {
+	public void removeCrossPointers_LSi() {
 		for(int i = 0; i < crossPointersLS.size(); i++) {
-			if(i != excludeDimension) { crossPointersLS.get(i).remove(); }
+			if(i != dimensionSortedOn) {  if(crossPointersLS.get(i) != null) { crossPointersLS.get(i).remove(); } }
 		}
 	}
 	
 	public void removeCrossPointers_CLSi() {
-		for(int i = 0; i < crossPointersCLS.size(); i++) {
-			crossPointersCLS.get(i).remove();
+		for(int i = 0; i < crossPointersCLS.size(); i++) { 
+			if(crossPointersCLS.get(i) != null) { crossPointersCLS.get(i).remove(); } 
 		}
 	}
 	
 	public void remove() {
-		if(prev != null) { prev.setNext(next); }
-		if(next != null) { next.setPrev(prev); }
-		next = null; prev = null;
+		if(doublyLinkedList.getFirst() == this) { doublyLinkedList.incrementHead(); }
+		if(doublyLinkedList.getLast() == this) { doublyLinkedList.decrementTail(); }
+		
+		if(prev != null) { prev.setNext(next); prev = null; }
+		if(next != null) { next.setPrev(prev); next = null; }
 		doublyLinkedList.decrementSize();
+		
+		// clean up cross pointers to "this" object
+		for(PointNode pointNode : crossPointersLS) { if(pointNode != null) pointNode.setCrossPointer(null, dimensionSortedOn); }
+		for(PointNode pointNode : crossPointersCLS) { if(pointNode != null) pointNode.setCrossPointersCLS(null, dimensionSortedOn); }
 	}
 	
 	public double[] getCoordinates() { return coords; }
@@ -129,7 +137,7 @@ public class PointNode{
 		return -1;
 	}
 	
-	public String toString() { return Arrays.toString(coords).replace("[", "(").replace("]", ")"); }
-	
-	public void printString() { System.out.println(Arrays.toString(coords).replace("[", "(").replace("]", ")")); }
+//	public String toString() { return Arrays.toString(coords).replace("[", "(").replace("]", ")"); }
+//	
+//	public void printString() { System.out.println(Arrays.toString(coords).replace("[", "(").replace("]", ")")); }
 }

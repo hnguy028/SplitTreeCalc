@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,11 +40,28 @@ public class Main {
 		coll.print();
 		coll2.print();
 		System.out.println();
-	
-		System.out.println();
-		coll.print();
-		coll2.print();
 		
+		TreeNode treeNode = new TreeNode(computeBoundingBox(coll), coll);
+		treeNode.partialSplitTree();
+		System.out.println(treeNode.getRightChild().CLS);
+		System.out.println(treeNode.getRightChild().LSu.getLSi(0).get(0).getCrossPointersCLS());
+		//treeNode.getLeftChild().partialSplitTree();
+		treeNode.print();
+	}
+	
+	public static LinkedList<double[]> computeBoundingBox(LS_Collection LS) {
+		int dimensions = LS.getDimensionSize();
+		LinkedList<double[]> R = new LinkedList<double[]>();
+		
+		for(int i = 0; i < dimensions; i ++) {
+			DoublyLinkedList LSi = LS.getLSi(i);
+			
+			double _min = LSi.getFirst().getCoordinateValueAt(i);
+			double _max = LSi.getLast().getCoordinateValueAt(i);
+			
+			R.add(new double[] {_min, _max});
+		}
+		return R;
 	}
 	
 	public void partialSplitTree(LinkedList<double[]> S, HyperRectangle R, LS_Collection LS) {
@@ -52,7 +70,7 @@ public class Main {
 		int size = S.size();
 		
 		// Create a node u, which will be the root of the final partial split tree
-		TreeNode uNode = new TreeNode(S, R.getRo(), LS);
+		//TreeNode uNode = new TreeNode(S, R.getRo(), LS);
 	}
 	
 	private void step3() {

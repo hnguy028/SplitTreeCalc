@@ -2,7 +2,6 @@ package DataStructures;
 
 import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 public class HyperRectangle {
 	LinkedList<double[]> Ro; // Ro(u) := R 		Rectangle containing the bounding box
