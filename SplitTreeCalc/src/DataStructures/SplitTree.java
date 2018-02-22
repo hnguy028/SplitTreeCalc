@@ -24,7 +24,9 @@ public class SplitTree {
 		
 		recursiveCall(root);
 		
+		System.out.print("Input Dataset: ");
 		root.getSu().printSet();
+		System.out.println();
 	}
 	
 	// DFS style
