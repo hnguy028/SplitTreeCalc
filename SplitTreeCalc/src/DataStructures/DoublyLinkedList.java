@@ -6,10 +6,15 @@ import java.util.LinkedList;
 public class DoublyLinkedList {
 	private PointNode head;
 	private PointNode tail;
+	
 	private int size;
+	
 	private PointNodeComparator comparator;
+	
 	private int dimensions;
 	private int dimensionRep;
+	
+	private String[] setBrackets = new String[]{"[","]"};
 	
 	public DoublyLinkedList(int _dimensions) {
 		head = null;
@@ -217,7 +222,7 @@ public class DoublyLinkedList {
 		
 		PointNode temp = head;
 		
-		while(temp != null) { try { dll.add_clone(temp, temp.getCoordinates(), dimensionRep); } catch(Exception e) {System.out.println("Error"); } temp = temp.getNext(); }
+		while(temp != null) { try { dll.add_clone(temp, temp.getCoordinates(), dimensionRep); } catch(Exception e) {System.out.println( e.getMessage() ); } temp = temp.getNext(); }
 		
 		return dll;
 	}
@@ -233,8 +238,13 @@ public class DoublyLinkedList {
 		return dll;
 	}
 	
+	public String toString(String[] brackets) {
+		if(brackets != null) { setBrackets = brackets; }
+		return toString();
+	}
+	
 	public String toString() {
-		String out = "[";
+		String out = setBrackets[0];
 		
 		PointNode temp = head;
 		
@@ -243,8 +253,9 @@ public class DoublyLinkedList {
 			temp = temp.getNext(); 
 		}
 		
-		return out + "]";
+		return out + setBrackets[1];
 	}
 	
 	public void print() { System.out.println(this.toString()); }
+	public void printSet() { System.out.println(this.toString(new String[] {"{", "}"})); }
 }

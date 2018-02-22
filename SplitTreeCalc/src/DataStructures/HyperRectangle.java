@@ -4,14 +4,19 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class HyperRectangle {
-	LinkedList<double[]> Ro; // Ro(u) := R 		Rectangle containing the bounding box
-	LinkedList<double[]> R; // R(u) := R(Su)		Bounding box
-	int hyperplane_index;
-	double hyperplaneSplitPoint;
+	private LinkedList<double[]> Ro; // Ro(u) := R 		Rectangle containing the bounding box
+	private LinkedList<double[]> R; // R(u) := R(Su)		Bounding box
+	
+	private int hyperplane_index;
+	private double hyperplaneSplitPoint;
+	
+	private LinkedList<double[]> vertices;
 	
 	public HyperRectangle(LS_Collection _LS, LinkedList<double[]> _Ro) {
 		this.Ro = _Ro;
 		this.R = new LinkedList<double[]>();
+		this.vertices = new LinkedList<double[]>();
+		
 		computeBoundingBox(_LS);
 	}
 	
@@ -22,6 +27,9 @@ public class HyperRectangle {
 		
 		for(int i = 0; i < dimensions; i ++) {
 			DoublyLinkedList LSi = LS.getLSi(i);
+			
+			vertices.add(LSi.getFirst().getCoordinates());
+			vertices.add(LSi.getLast().getCoordinates());
 			
 			double _min = LSi.getFirst().getCoordinateValueAt(i);
 			double _max = LSi.getLast().getCoordinateValueAt(i);
@@ -35,21 +43,22 @@ public class HyperRectangle {
 		this.hyperplane_index = _hyperplane_index;
 	}
 	
-	public int getHyperplaneIndex() {
-		return this.hyperplane_index;
+	public double getLmax() {
+		double[] l = R.get(hyperplane_index);
+		return l[1] - l[0];
 	}
 	
-	public double getHyperplanePoint() {
-		return hyperplaneSplitPoint;
-	}
+	public int getDimension() { return R.getFirst().length; }
 	
-	public LinkedList<double[]> getRo() {
-		return Ro;
-	}
+	public int getHyperplaneIndex() { return this.hyperplane_index; }
 	
-	public LinkedList<double[]> getR() {
-		return R;
-	}
+	public double getHyperplanePoint() { return hyperplaneSplitPoint; }
+	
+	public LinkedList<double[]> getRo() { return Ro; }
+	
+	public LinkedList<double[]> getR() { return R; }
+	
+	public LinkedList<double[]> getVertices() { return vertices; }
 	
 	public void print() {
 		System.out.println("Ro(u)" + Arrays.toString(Ro.toArray()));

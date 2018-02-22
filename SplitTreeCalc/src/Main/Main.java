@@ -1,12 +1,13 @@
+package Main;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 
 import DataStructures.*;
+import Main.Algorithms;
 
 public class Main {
 	public static void main(String[] args) {
-		int dimensionSize = 2;
-
 		double[] a = new double[]{0.0, 0.0};
 		double[] b = new double[]{1.0, 10.0}; 
 		double[] c = new double[]{3.0/2.0, 1.0}; 
@@ -19,7 +20,10 @@ public class Main {
 		LinkedList<double[]> pointSet = new LinkedList<double[]>(Arrays.asList(a, b, c, d, e, f, g, h));
 		
 		SplitTree tree = new SplitTree();
-		tree.FastSplitTree(pointSet, null, dimensionSize);
+		tree.FastSplitTree(pointSet, null);
 		tree.print();
+		
+		Algorithms algorithms = new Algorithms();
+		algorithms.ComputeWSPD(tree.getTreeRoot(), 4.00001);
 	}
 }

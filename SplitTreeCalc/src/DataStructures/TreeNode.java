@@ -1,6 +1,5 @@
 package DataStructures;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -11,6 +10,9 @@ public class TreeNode {
 	// Pointset Su
 	private DoublyLinkedList Su;
 	
+	// 
+	private HyperRectangle rectangle;
+	
 	// Rectangle
 	private	LinkedList<double[]> Ro;
 	
@@ -18,10 +20,13 @@ public class TreeNode {
 	private LinkedList<double[]> Ru;
 	
 	// Collection of linkedlists of Su, sorted by dimension 
-	public LS_Collection LSu;
-	public LS_Collection CLS;
+	private LS_Collection LSu;
+	private LS_Collection CLS;
 	
 	private int n;
+	
+	// For printing purposes
+	private String[] setBrackets = null;
 	
 	public TreeNode() {
 		leftChild = null;
@@ -100,7 +105,7 @@ public class TreeNode {
 	
 	private void step3() {
 		// Compute bounding box
-		HyperRectangle rectangle = new HyperRectangle(LSu, Ro);
+		rectangle = new HyperRectangle(LSu, Ro);
 		
 		// set R(u) = R(Su)
 		Ru = rectangle.getR();
@@ -264,14 +269,26 @@ public class TreeNode {
 		// Connect cross pointers between each subset list, and connect cross pointers between CLS and LS subset
 		for(TreeNode node : leafSets) { node.LSu.connectCrossPointers(CLS); node.savePointSet(); }
 	}
+	
+	public void computeBoundingBoxLeaf() {
+		// Compute bounding box
+		rectangle = new HyperRectangle(LSu, Ro);
+				
+		// set R(u) = R(Su)
+		Ru = rectangle.getR();
+	}
 
 	private void setLSu(LS_Collection _LS) { LSu = _LS; }
 	
 	private void setLS(LS_Collection _LS, LS_Collection _CLS) { LSu = _LS; CLS = _CLS; }
 	
+	public DoublyLinkedList getSu() { return Su; }
+	
 	public void setRo(LinkedList<double[]> _Ro) { Ro = _Ro; }
 	
 	public void setRu(LinkedList<double[]> _Ru) { Ru = _Ru; }
+	
+	public HyperRectangle getHyperRectangle() { return rectangle; }
 	
 	public LinkedList<double[]> getRu() { if(Ru == null) { return new LinkedList<double[]>(Arrays.asList(Su.getFirst().getCoordinates())); } return Ru; }
 	
@@ -287,6 +304,11 @@ public class TreeNode {
 	
 	public TreeNode getRightChild() { return rightChild; }
 	
+	public String toString(int lvl, String[] brackets) { 
+		if(brackets != null) { setBrackets = brackets; } 
+		return toString(lvl); 
+	}
+	
 	public String toString(int lvl) {
 		String brk = "";
 		for(int i = 0; i < lvl; i++) { brk += "\t"; }
@@ -294,7 +316,7 @@ public class TreeNode {
 		String lChild = (leftChild == null) ? brk + "\tDepth" + (lvl + 1) + ": []" : leftChild.toString(lvl + 1);
 		String rChild = (rightChild == null) ? brk + "\tDepth" + (lvl + 1) + ": []" : rightChild.toString(lvl + 1);
 
-		String output = brk + "Depth" + lvl + ": " + Su.toString() + " :\n" + lChild + "\n" + rChild + "\n";// + "Depth" + lvl + ":" + getRu() + "--";
+		String output = brk + "Depth" + lvl + ": " + Su.toString(setBrackets) + " :\n" + lChild + "\n" + rChild + "\n";// + "Depth" + lvl + ":" + getRu() + "--";
 
 		return output;
 	}

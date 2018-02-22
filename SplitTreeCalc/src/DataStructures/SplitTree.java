@@ -1,44 +1,41 @@
 package DataStructures;
+
 import java.util.LinkedList;
-import java.util.List;
 
 public class SplitTree {
 	
+	private LinkedList<double[]> Su;
+	private LinkedList<double[]> Ro;
 	
+	private LS_Collection LS;
 	
-	LinkedList<double[]> Su;
-	LinkedList<double[]> Ro;
+	private int dimensions;
 	
-	LS_Collection LS;
+	private TreeNode root;
 	
-	int dimensions;
-	
-	TreeNode root;
-	
-	public void FastSplitTree(LinkedList<double[]> S, LinkedList<double[]> R, int _dimensions) {
+	public void FastSplitTree(LinkedList<double[]> S, LinkedList<double[]> R) {
 		Su = S;
 		Ro = R;
-		dimensions = _dimensions;
+		dimensions = S.getFirst().length;
 		
 		preProcess();
 		
 		root = new TreeNode(Ro, LS);
 		
 		recursiveCall(root);
+		
+		root.getSu().printSet();
 	}
 	
 	// DFS style
 	private void recursiveCall(TreeNode node) {
-		
-		if(node.size() <= 1) {
-			// TODO : do something
-		} else {
-		
+		if(node.size() > 1) {
 			if(node.isLeafNode()) { node.partialSplitTree(); }
 		
 			recursiveCall(node.getLeftChild());
 			recursiveCall(node.getRightChild());
-			
+		} else {
+			node.computeBoundingBoxLeaf();
 		}
 	}
 	
@@ -68,25 +65,7 @@ public class SplitTree {
 		}
 	}
 	
-	
-	/* Probably needs to be implemented in the TreeNode class, also need to handle partialSplitTree call when LSu is size <= 1 */
-	private void splitTreeCardOne(List<PointNode> S, HyperRectangle R) {
-		// if |S| == 1
-		
-		
-		// create a node u
-		// Node u;
-		
-		// bounding box R(u) = R(S)
-		
-		// rectangle containing bounding box Ro(u) = R
-		
-		// Store with u the only point of S, Ro(u), R(u)
-		
-		// set u's pointers to null
-		
-		// return u;
-	}
+	public TreeNode getTreeRoot() { return root; }
 	
 	public void print() { root.print(); }
 }
