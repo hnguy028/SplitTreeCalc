@@ -1,11 +1,14 @@
 package DataStructures;
 
+import java.awt.List;
+import java.time.chrono.MinguoChronology;
 import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Ball {
 	private double radius;
 	private double[] centerCoordinate;
+	private int dimensions;
 	
 	private final double zero = 0.000000001;
 	
@@ -107,9 +110,90 @@ public class Ball {
 		radius = Math.sqrt( Math.pow(p2[0] - x, 2) + Math.pow(p2[1] - y, 2));
 	}
 	
+	public void computeCircle(List points) {
+		
+	}
+	
+	/*
+	 * Ritter's algorithm for smallest bounding hypersphere over a set of points in "d" dimensions
+	 */
+	public void rittersAlgorithm(LinkedList<double[]> points) {
+		double[] pmin = points.getFirst();
+		double[] pmax = points.getFirst();
+		
+		double[] coord = null;
+		
+		for(int i = 0; i < points.size(); i++) {
+			coord = points.get(i);
+			for(int d = 0; d < dimensions; d++) {
+				pmin[d] = Math.min(pmin[d], coord[d]);
+				pmax[d] = Math.max(pmax[d], coord[d]);
+			}
+		}
+		
+		double[] cdiff = new double[dimensions];
+		double diameter = 0.0;
+		
+		for(int i = 0; i < dimensions; i++) {
+			cdiff[i] = pmax[i] - pmin[i];
+			diameter = Math.max(diameter, cdiff[i]);
+		}
+		
+		centerCoordinate = new double[dimensions];
+		
+		for(int i = 0; i < dimensions; i++) {
+			centerCoordinate[i] = (pmax[i] + pmin[i]) / 2.0;
+		}
+		
+		radius = diameter / 2.0;
+		double sq_radius = Math.pow(radius, 2);
+
+		double[] direction = new double[dimensions];
+		for(int i = 0; i < points.size(); i++) {
+			coord = points.get(i);
+			
+			for(int d = 0; d < dimensions; d++) {
+				direction[d] = coord[d] - centerCoordinate[d];
+			}
+			
+			double sq_distance = length2(direction);
+			
+			if(sq_distance > sq_radius) {
+				double distance = Math.sqrt(sq_distance);
+				
+				double difference = distance - radius;
+
+				double new_diameter = 2 * radius + difference;
+				sq_radius = radius * radius;
+
+				difference /= 2;
+				
+				for(int d = 0; d < dimensions; d++) {
+					centerCoordinate[d] += difference * direction[d];
+				}
+			}
+		}
+		
+	}
+	
+	// for d dimensions
 	public double getDistance(Ball _b) {
 		double[] c = _b.getCenter();
-		return Math.sqrt( Math.pow(c[0] - centerCoordinate[0], 2) + Math.pow(c[1] - centerCoordinate[1], 2) );
+		double res = 0.0;
+		
+		for(int i = 0; i < dimensions; i++) {
+			res += Math.pow(c[i] - centerCoordinate[i], 2);
+		}
+		return Math.sqrt(res);
+	}
+	
+	public double length2(double[] vec) {
+		double res = 0.0;
+		
+		for(int i = 0; i < dimensions; i++) {
+			res += Math.pow(vec[i], 2);
+		}
+		return res;
 	}
 	
 	public double getRadius() { return radius; }
