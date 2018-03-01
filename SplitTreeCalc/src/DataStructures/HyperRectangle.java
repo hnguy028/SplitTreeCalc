@@ -28,8 +28,8 @@ public class HyperRectangle {
 		for(int i = 0; i < dimensions; i ++) {
 			DoublyLinkedList LSi = LS.getLSi(i);
 			
-			vertices.add(LSi.getFirst().getCoordinates());
-			vertices.add(LSi.getLast().getCoordinates());
+			vertices.add(LSi.getFirst().getCoordinates().clone());
+			vertices.add(LSi.getLast().getCoordinates().clone());
 			
 			double _min = LSi.getFirst().getCoordinateValueAt(i);
 			double _max = LSi.getLast().getCoordinateValueAt(i);

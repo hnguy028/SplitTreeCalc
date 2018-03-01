@@ -1,8 +1,14 @@
 package Main;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import DataStructures.*;
+
+/*
+ * These algorithms are not part of the FastSplitTree algorithm. They are just extra implmentation of
+ * algorithms learned in class, and may not all be correct!
+ */
 
 public class Algorithms {
 	
@@ -49,8 +55,15 @@ public class Algorithms {
 		
 		double max_radius = Math.max(ball1.getRadius(), ball2.getRadius());
 		
-		double delta =  ball1.getDistance(ball2) - (2 * max_radius);
-		//double delta = ball1.getDistance(ball2) - ball1.getRadius() - ball2.getRadius();
+		//double delta =  ball1.getDistance(ball2) - (2 * max_radius);
+		double delta = ball1.getDistance(ball2) - ball1.getRadius() - ball2.getRadius();
+		
+		//v.print();
+		//w.print();
+		Arrays.toString(v.getHyperRectangle().getRo().toArray());
+		ball1.print();
+		ball2.print();
+		System.out.println("delta: " + delta + "\n");
 		
 		return delta >= s * max_radius;
 	}

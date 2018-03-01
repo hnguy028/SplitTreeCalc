@@ -242,7 +242,6 @@ public class TreeNode {
 		vNode.step2();
 		
 		wNode.setLSu(new LS_Collection(LSu.getDimensionSize()));
-
 	}
 	
 	// only called at the root of the partial split tree, where all points in CLS have a pointer to a lead node
