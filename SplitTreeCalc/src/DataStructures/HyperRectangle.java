@@ -28,6 +28,7 @@ public class HyperRectangle {
 		for(int i = 0; i < dimensions; i ++) {
 			DoublyLinkedList LSi = LS.getLSi(i);
 			
+			// add vertex of the hyper rectangle to list of vertices
 			vertices.add(LSi.getFirst().getCoordinates().clone());
 			vertices.add(LSi.getLast().getCoordinates().clone());
 			
@@ -43,6 +44,9 @@ public class HyperRectangle {
 		this.hyperplane_index = _hyperplane_index;
 	}
 	
+	/*
+	 *	Return the length of the max dimensions of the hyperrectangle 
+	 */
 	public double getLmax() {
 		double[] l = R.get(hyperplane_index);
 		return l[1] - l[0];

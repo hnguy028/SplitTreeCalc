@@ -130,7 +130,27 @@ public class PointNode{
 	public int compareTo(PointNode _point, int _dimension) {
 		if(_dimension >= _point.getDimensions() || _dimension >= dimensions) { throw new IndexOutOfBoundsException(); }
 		
-		if(coords[_dimension] == _point.getCoordinateValueAt(_dimension)) { return 0; }
+		if(coords[_dimension] == _point.getCoordinateValueAt(_dimension)) {
+			// iterate all other dimension excluding the given dimension to check equivalence
+			for(int i = 0; i < dimensions; i++) {
+				if(i != _dimension) {
+					int comparison = this.compareToStrict(_point, i);
+					if(0 != comparison) { return comparison; }
+				}
+			}
+			return 0; 
+		}
+		if(coords[_dimension] > _point.getCoordinateValueAt(_dimension)) { return 1; }
+		return -1;
+	}
+	
+	/*
+	 *  strictly limit the comparison of two points the the specified dimension
+	 */
+	private int compareToStrict(PointNode _point, int _dimension) {
+		if(_dimension >= _point.getDimensions() || _dimension >= dimensions) { throw new IndexOutOfBoundsException(); }
+		
+		if(coords[_dimension] == _point.getCoordinateValueAt(_dimension)) { return 0;  }
 		if(coords[_dimension] > _point.getCoordinateValueAt(_dimension)) { return 1; }
 		return -1;
 	}

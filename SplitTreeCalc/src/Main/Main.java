@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 import DataStructures.*;
+import WSPD.*;
 import Main.Algorithms;
 
 public class Main {
@@ -24,8 +25,11 @@ public class Main {
 		double[] f = new double[]{11.0, 2.0};
 		double[] g = new double[]{11.0, 9.0};
 		double[] h = new double[]{12.0, 0.0};
+		double[] neg1 = new double[]{-12.0, 0.0};
+		double[] dup = new double[]{1.0, 10.0};
+		double[] neg2 = new double[]{1.0, -10.0};
 		
-		LinkedList<double[]> pointSet = new LinkedList<double[]>(Arrays.asList(a, b, c, d, e, f, g, h));
+		LinkedList<double[]> pointSet = new LinkedList<double[]>(Arrays.asList(a, b, c, d, e, f, g, h, neg1));
 		
 		if(args.length > 0) {
 			try {
@@ -49,9 +53,14 @@ public class Main {
 		if(pointSet.getFirst().length == 2) {
 			System.out.println("WSPD:");
 			
-			Algorithms algorithms = new Algorithms();
+			WSPD algorithms = new WSPD();
 		
-			algorithms.ComputeWSPD(tree.getTreeRoot(), 4.00001);
+			LinkedList<Pair> resultSet = algorithms.ComputeWSPD(tree.getTreeRoot(), 4.00001);
+			
+			for(int i = 0; i < resultSet.size(); i++) {
+				String out = (i == resultSet.size() - 1) ? resultSet.get(i).toString() : resultSet.get(i).toString() + ","; 
+				System.out.println(out);
+			}
 		}
 	}
 	

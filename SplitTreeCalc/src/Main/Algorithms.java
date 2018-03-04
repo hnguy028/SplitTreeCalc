@@ -1,68 +1,46 @@
 package Main;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 
 import DataStructures.*;
 
-/*
- * These algorithms are not part of the FastSplitTree algorithm. They are just extra implmentation of
- * algorithms learned in class, and may not all be correct!
- */
-
 public class Algorithms {
 	
-	public void ComputeWSPD(TreeNode T, double s) {
-		TreeNode vNode = T.getLeftChild();
-		TreeNode wNode = T.getRightChild();
+	/*
+	 * Should return a T-spanner GRAPH 
+	 */
+	public void BuildSpannerFromWSPD(LinkedList<Pair> wspd) {
+		// create some sort of dictionary set? for the edge list?
 		
-		LinkedList<Pair> resultSet = FindPairs(vNode, wNode, s);
-		
-		for(Pair list : resultSet) {
-			System.out.println(list.toString() + ",");
+		for(Pair pair : wspd) {
+			pair.getFirst();
+			pair.getLast();
 		}
+		
+		
+		// we need to add an edge between every point in the set to the representative?
+		// otherwise how else would we do this? 
+		//		we could implement the normal t-spanner algo within the set
+		//		todo : implement this so it could easily be overridden depending on how users would like to connect them
+		//		most likely though, this doesn't really matter since a single set is well-separated from other sets
+		
+		
+		// since all pairs represent an edge for the t-spanner
 	}
 	
-	public LinkedList<Pair> FindPairs(TreeNode v, TreeNode w, double s) {
-		if(isWellSeparated(v, w, s)) {
-			LinkedList<Pair> res = new LinkedList<Pair>();
-			res.add(new Pair(v.getSu(), w.getSu()));
-			return res;
-		} else {
-			if(v.getHyperRectangle().getLmax() <= w.getHyperRectangle().getLmax()) {
-				TreeNode wl = w.getLeftChild();
-				TreeNode wr = w.getRightChild();
-				
-				LinkedList<Pair> res = FindPairs(v, wl, s);
-				res.addAll(FindPairs(v, wr, s));
-				
-				return res;
-			} else {
-				TreeNode vl = v.getLeftChild();
-				TreeNode vr = v.getRightChild();
-				
-				LinkedList<Pair> res = FindPairs(vl, w, s);
-				res.addAll(FindPairs(vr, w, s));
-				
-				return res;
-			}
+	/*
+	 *	Given a pair, ie a list of points connect the points in some way 
+	 */
+	private void connectPair(Pair pair, String method) {
+		switch (method) {
+		case "tspanner":
+			// perform t-spanner algorithm on this subset of points
+			break;
+		case "":
+		default:
+			// first element as representative, connect all other in the set to it
+			
+			break;
 		}
-	}
-	
-	private boolean isWellSeparated(TreeNode v, TreeNode w, double s) {
-		Ball ball1 = new Ball(v.getHyperRectangle());
-		Ball ball2 = new Ball(w.getHyperRectangle());
-		
-		double max_radius = Math.max(ball1.getRadius(), ball2.getRadius());
-		
-		double delta =  ball1.getDistance(ball2) - (2 * max_radius);
-		//double delta = ball1.getDistance(ball2) - ball1.getRadius() - ball2.getRadius();
-		
-		Arrays.toString(v.getHyperRectangle().getRo().toArray());
-		ball1.print();
-		ball2.print();
-		System.out.println("delta: " + delta + "\n");
-		
-		return delta >= s * max_radius;
 	}
 }
