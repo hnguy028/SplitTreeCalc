@@ -8,15 +8,29 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import org.graphstream.graph.Graph;
+import org.graphstream.graph.Node;
+import org.graphstream.graph.implementations.SingleGraph;
+
 import DataStructures.*;
 import WSPD.*;
-import Main.Algorithms;
+import TSpanner.*;
 
 public class Main {
 	
 	static LinkedList<double[]> pointSet = null;
 	
 	public static void main(String[] args) {
+		// GUI
+		Graph graph = new SingleGraph("Tutorial 1");
+		graph.addNode("B").addAttribute("xy", 1, 1);
+		
+		// probably use grey overlay for ball
+		Node aNode = graph.addNode("A");
+		aNode.addAttribute("xy", 1, 1);
+		aNode.addAttribute("ui.style", "fill-color: grey; size: 20px; stroke-mode: plain; stroke-color: black;");
+		graph.display(false);
+		
 		// Data
 		double[] a = new double[]{0.0, 0.0};
 		double[] b = new double[]{1.0, 10.0}; 
@@ -50,19 +64,24 @@ public class Main {
 		System.out.println("Split Tree:");
 		tree.print();
 		
+		LinkedList<Pair> resultSet = null;
+		
 		// Run computeWSPD on tree
 		if(pointSet.getFirst().length == 2) {
 			System.out.println("WSPD:");
 			
 			WSPD algorithms = new WSPD(); 
 		
-			LinkedList<Pair> resultSet = algorithms.ComputeWSPD(tree.getTreeRoot(), 4.00001);
+			resultSet = algorithms.ComputeWSPD(tree.getTreeRoot(), 4.00001);
 			
 			for(int i = 0; i < resultSet.size(); i++) {
 				String out = (i == resultSet.size() - 1) ? resultSet.get(i).toString() : resultSet.get(i).toString() + ","; 
 				System.out.println(out);
 			}
 		}
+		
+		// Run build t-spanner
+		new TSpanner().BuildSpannerFromWSPD(resultSet, tree.getTreeRoot().getSu(), 2);
 	}
 	
 	public static LinkedList<double[]> loadData(String filepath) throws IOException {

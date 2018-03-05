@@ -1,6 +1,5 @@
 package WSPD;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 
 import DataStructures.*;
@@ -70,11 +69,6 @@ public class WSPD {
 		double max_radius = Math.max(ball1.getRadius(), ball2.getRadius());
 		
 		double delta = ball1.getDistance(ball2) - ball1.getRadius() - ball2.getRadius();
-		
-		Arrays.toString(v.getHyperRectangle().getRo().toArray());
-		ball1.print();
-		ball2.print();
-		System.out.println("delta: " + delta + "\n");
 		
 		return delta >= s * max_radius;
 	}

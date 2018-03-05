@@ -62,9 +62,6 @@ public class Ball {
 		radius = diameter / 2.0;
 		double sq_radius = Math.pow(radius, 2);
 		
-		System.out.println(Arrays.toString(centerCoordinate) + ", " + radius);
-		
-		
 		for(int i = 0; i < points.size(); i++) {
 			double[] direction = new double[dimensions];
 			
