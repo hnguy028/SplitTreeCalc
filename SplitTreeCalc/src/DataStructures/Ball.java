@@ -19,6 +19,15 @@ public class Ball {
 		computeCircle(points);
 	}
 	
+	public Ball(LinkedList<double[]> points) {
+		
+		dimensions = points.getFirst().length;
+		
+		centerCoordinate = new double[dimensions];
+		
+		computeCircle(points);
+	}
+	
 	public void computeCircle(LinkedList<double[]> points) {
 		rittersAlgorithm(points);
 	}
@@ -26,7 +35,6 @@ public class Ball {
 	/*
 	 * Ritter's algorithm for smallest bounding hypersphere over a set of points in "d" dimensions
 	 */
-	// TODO : currently no able to handle negative numbers
 	public void rittersAlgorithm(LinkedList<double[]> points) {
 		double[] pmin = points.getFirst().clone();
 		double[] pmax = points.getFirst().clone();
@@ -49,19 +57,21 @@ public class Ball {
 			diameter = Math.max(diameter, cdiff[i]);
 		}
 		
-		for(int i = 0; i < dimensions; i++) {
-			centerCoordinate[i] = (pmax[i] + pmin[i]) / 2.0;
-		}
+		for(int i = 0; i < dimensions; i++) { centerCoordinate[i] = (pmax[i] + pmin[i]) / 2.0; }
 		
 		radius = diameter / 2.0;
 		double sq_radius = Math.pow(radius, 2);
 		
-		double[] direction = new double[dimensions];
+		System.out.println(Arrays.toString(centerCoordinate) + ", " + radius);
+		
+		
 		for(int i = 0; i < points.size(); i++) {
-			coord = points.get(i);
+			double[] direction = new double[dimensions];
+			
+			double[] point = points.get(i);
 			
 			for(int d = 0; d < dimensions; d++) {
-				direction[d] = coord[d] - centerCoordinate[d];
+				direction[d] = point[d] - centerCoordinate[d];
 			}
 			
 			double sq_distance = length2(direction);
@@ -72,8 +82,9 @@ public class Ball {
 				double difference = distance - radius;
 
 				double new_diameter = 2 * radius + difference;
+				radius = new_diameter / 2.0;
+				
 				sq_radius = radius * radius;
-
 				difference /= 2;
 				
 				for(int d = 0; d < dimensions; d++) {
@@ -94,14 +105,14 @@ public class Ball {
 		return Math.sqrt(res);
 	}
 	
-	// squared length
+	// squared length - euclidean distance
 	public double length2(double[] vec) {
 		double res = 0.0;
 		
 		for(int i = 0; i < dimensions; i++) {
 			res += Math.pow(vec[i], 2);
 		}
-		return res;
+		return Math.sqrt(res);
 	}
 	
 	public double getRadius() { return radius; }

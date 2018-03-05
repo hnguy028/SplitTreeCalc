@@ -11,7 +11,7 @@ public class Pair {
 	public DoublyLinkedList getLast() { return  l2; }
 	
 	public String toString() {
-		return "{" + l1.toString(new String[]{"{","}"}) + "," + l2.toString(new String[]{"{","}"}) + "}";
+		return "{" + l1.toString(new String[]{"{","}"}) + ", " + l2.toString(new String[]{"{","}"}) + "}";
 	}
 	
 	public void print() {

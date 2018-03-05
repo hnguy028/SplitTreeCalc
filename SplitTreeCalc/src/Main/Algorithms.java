@@ -1,5 +1,6 @@
 package Main;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import DataStructures.*;
@@ -10,22 +11,13 @@ public class Algorithms {
 	 * Should return a T-spanner GRAPH 
 	 */
 	public void BuildSpannerFromWSPD(LinkedList<Pair> wspd) {
-		// create some sort of dictionary set? for the edge list?
+		HashMap<String, DoublyLinkedList> set = new HashMap<String, DoublyLinkedList>();
 		
 		for(Pair pair : wspd) {
-			pair.getFirst();
-			pair.getLast();
+			if(!set.containsKey(pair.getFirst().toString())) set.put(pair.getFirst().toString(),pair.getFirst());
+			if(!set.containsKey(pair.getLast().toString())) set.put(pair.getLast().toString(),pair.getLast());
 		}
 		
-		
-		// we need to add an edge between every point in the set to the representative?
-		// otherwise how else would we do this? 
-		//		we could implement the normal t-spanner algo within the set
-		//		todo : implement this so it could easily be overridden depending on how users would like to connect them
-		//		most likely though, this doesn't really matter since a single set is well-separated from other sets
-		
-		
-		// since all pairs represent an edge for the t-spanner
 	}
 	
 	/*

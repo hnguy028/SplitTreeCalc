@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -29,7 +30,7 @@ public class Main {
 		double[] dup = new double[]{1.0, 10.0};
 		double[] neg2 = new double[]{1.0, -10.0};
 		
-		LinkedList<double[]> pointSet = new LinkedList<double[]>(Arrays.asList(a, b, c, d, e, f, g, h, neg1));
+		LinkedList<double[]> pointSet = new LinkedList<double[]>(Arrays.asList(a, b, c, d, e, f, g, h));
 		
 		if(args.length > 0) {
 			try {
@@ -53,7 +54,7 @@ public class Main {
 		if(pointSet.getFirst().length == 2) {
 			System.out.println("WSPD:");
 			
-			WSPD algorithms = new WSPD();
+			WSPD algorithms = new WSPD(); 
 		
 			LinkedList<Pair> resultSet = algorithms.ComputeWSPD(tree.getTreeRoot(), 4.00001);
 			

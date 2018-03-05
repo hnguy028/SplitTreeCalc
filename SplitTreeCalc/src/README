@@ -18,5 +18,3 @@ TSpanner from WSPD
 Problems:
 Duplicate points generate a null pointer exception somewhere in the partialSplitTree Algorithm
 	- Solution don't add duplicate points to the datastructure - this is not very nice :( 
-WSPD can't handle negative points, for some reason the generate a large center points for the pairs
-	- Solution dont know yet

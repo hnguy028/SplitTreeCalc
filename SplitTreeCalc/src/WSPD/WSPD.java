@@ -6,14 +6,36 @@ import java.util.LinkedList;
 import DataStructures.*;
 
 public class WSPD {
+	
+	// Init recurse call
 	public LinkedList<Pair> ComputeWSPD(TreeNode T, double s) {
-		TreeNode vNode = T.getLeftChild();
-		TreeNode wNode = T.getRightChild();
-		
-		LinkedList<Pair> resultSet = FindPairs(vNode, wNode, s);
-		
-		return resultSet;
+		return DFS(T, s);
 	}
+	
+	// Recursive DFS to iterate all nodes in the splitTree
+	public LinkedList<Pair> DFS(TreeNode root, double s) {
+		LinkedList<Pair> wspd = new LinkedList<Pair>();
+		
+		// continue recursion only for internal nodes
+		if(!isLeaf(root)) {
+			wspd = handleInternalNode(root, s);
+			
+			wspd.addAll(DFS(root.getLeftChild(), s));
+			wspd.addAll(DFS(root.getRightChild(), s));
+		}
+		
+		return wspd;
+	}
+	
+	// Run find pairs algorithm with the given internal node as the root
+	private LinkedList<Pair> handleInternalNode(TreeNode internalNode, double s) {
+		if(internalNode != null) {
+			return FindPairs(internalNode.getLeftChild(), internalNode.getRightChild(), s);
+		}
+		return new LinkedList<Pair>();
+	}
+	
+	private boolean isLeaf(TreeNode node) { return (node.getLeftChild() == null && node.getRightChild() == null); }
 	
 	public LinkedList<Pair> FindPairs(TreeNode v, TreeNode w, double s) {
 		if(isWellSeparated(v, w, s)) {
