@@ -12,12 +12,12 @@ public class Ball {
 	
 	public Ball(HyperRectangle R) {
 		
+		// List of vertices from the hyperrectangle
 		LinkedList<List<Double>> points = R.getVertices();
 		
 		dimensions = points.getFirst().size();
 		
 		centerCoordinate = new ArrayList<Double>(Collections.nCopies(dimensions, 0.0));
-		
 		
 		computeCircle(points);
 	}
@@ -65,6 +65,7 @@ public class Ball {
 		radius = diameter / 2.0;
 		double sq_radius = Math.pow(radius, 2);
 		
+		// Check if there are any point encapsulated in the ball above
 		for(int i = 0; i < points.size(); i++) {
 			List<Double> direction = new ArrayList<Double>(Collections.nCopies(dimensions, 0.0));
 			
@@ -76,6 +77,7 @@ public class Ball {
 			
 			double sq_distance = length2(direction);
 			
+			// If any points exist outside the ball update the ball
 			if(sq_distance > sq_radius) {
 				double distance = Math.sqrt(sq_distance);
 				
@@ -94,18 +96,18 @@ public class Ball {
 		}
 	}
 	
+	// euclidean distance between the center point of 2 balls
 	public double getDistance(Ball _b) {
 		List<Double> c = _b.getCenter();
 		double res = 0.0;
 		
-		// euclidean distance
 		for(int i = 0; i < dimensions; i++) {
 			res += Math.pow(c.get(i) - centerCoordinate.get(i), 2);
 		}
 		return Math.sqrt(res);
 	}
 	
-	// squared length - euclidean distance
+	// squared length - euclidean distance of 2 coordinates
 	public double length2(List<Double> vec) {
 		double res = 0.0;
 		

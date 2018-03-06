@@ -15,15 +15,16 @@ public class TSpanner {
 	private HashMap<String, Edge> E = new HashMap<String, Edge>();
 	
 	private Graph graph;
+	private int min_dim = 2;
+	private int max_dim = 3;
 	
-	public TSpanner() {
-	}
+	public TSpanner() {}
 	
 	public void BuildSpannerFromWSPD(LinkedList<Pair> wspd, DoublyLinkedList pointSet, int dimensions) {
 		
 		S = pointSet.clone();
 		
-		if(dimensions > 0 && dimensions < 4) {
+		if(dimensions >= min_dim && dimensions <= max_dim) {
 			graph = new SingleGraph("T-Spanner");
 			
 			DoublyLinkedListIterator iterator = pointSet.iterator();
@@ -47,19 +48,22 @@ public class TSpanner {
 			// add to edge list
 			E.put(firstRepNode + secondRepNode, new Edge(pair.getFirst().getFirst().getCoordinates(), pair.getLast().getFirst().getCoordinates()));
 			
-			if(dimensions > 0 && dimensions < 4) {
+			if(dimensions >= min_dim && dimensions <= max_dim) {
 				// add the edge to the gui graph
 				graph.addEdge(firstRepNode + secondRepNode, firstRepNode, secondRepNode);
 			}
 		}
 		
-		if(dimensions > 0 && dimensions < 4) {
+		if(dimensions >= min_dim && dimensions <= max_dim) {
 			graph.display(false);
 		}
 	}
 	
+	/*
+	 *	Create graph if the dimensions are within required range 
+	 */
 	private void plotNode(Graph graph, PointNode node, int dimensions) throws Exception {
-		if(dimensions < 1 || dimensions > 3) { throw new Exception(); }
+		if(dimensions < min_dim || dimensions > max_dim) { throw new Exception(); }
 		
 		Node gNode;
 		

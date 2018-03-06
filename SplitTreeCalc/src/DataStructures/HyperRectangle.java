@@ -37,7 +37,6 @@ public class HyperRectangle {
 			double _min = LSi.getFirst().getCoordinateValueAt(i);
 			double _max = LSi.getLast().getCoordinateValueAt(i);
 			
-			// Using point here as a range object
 			R.add(new ArrayList<Double> (Arrays.asList(_min, _max)));
 			
 			// Find Lmax(R(u))

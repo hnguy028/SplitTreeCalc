@@ -81,7 +81,9 @@ public class PointNode{
 	public void setPrev(PointNode _prev) { this.prev = _prev; }
 	public void setPrev_Next(PointNode _prev) { prev = _prev; _prev.next = this; }
 	
-	// this function traverses it's LS cross pointers to PointNode p' , and then traverses to p' s CLS cross pointers
+	/* 
+	 * this function traverses it's LS cross pointers to PointNode p' , and then traverses to p's CLS cross pointers 
+	 */
 	public ArrayList<PointNode> getCopyCrossPointers() {
 		ArrayList<PointNode> res = new ArrayList<>(dimensions);
 		for(int i = 0; i < dimensions; i++) {

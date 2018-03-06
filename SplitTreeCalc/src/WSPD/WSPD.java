@@ -8,19 +8,19 @@ public class WSPD {
 	
 	// Init recurse call
 	public LinkedList<Pair> ComputeWSPD(TreeNode T, double s) {
-		return DFS(T, s);
+		return DFSComputeWSPD(T, s);
 	}
 	
 	// Recursive DFS to iterate all nodes in the splitTree
-	public LinkedList<Pair> DFS(TreeNode root, double s) {
+	public LinkedList<Pair> DFSComputeWSPD(TreeNode root, double s) {
 		LinkedList<Pair> wspd = new LinkedList<Pair>();
 		
 		// continue recursion only for internal nodes
 		if(!isLeaf(root)) {
 			wspd = handleInternalNode(root, s);
 			
-			wspd.addAll(DFS(root.getLeftChild(), s));
-			wspd.addAll(DFS(root.getRightChild(), s));
+			wspd.addAll(DFSComputeWSPD(root.getLeftChild(), s));
+			wspd.addAll(DFSComputeWSPD(root.getRightChild(), s));
 		}
 		
 		return wspd;
@@ -62,6 +62,9 @@ public class WSPD {
 		}
 	}
 	
+	/*
+	 *	Compute ball on the hyperspheres of each node and determine if they are well separated wrt to s 
+	 */
 	private boolean isWellSeparated(TreeNode v, TreeNode w, double s) {
 		Ball ball1 = new Ball(v.getHyperRectangle());
 		Ball ball2 = new Ball(w.getHyperRectangle());

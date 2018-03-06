@@ -89,25 +89,16 @@ public class LS_Collection {
 		for(int i = 0; i < dimensionSize; i++) {
 			LS.get(i).loadCrossPointersCLS_init();
 		}
-		
-		// At this point we have 2 collections LS and _LS
-		// (1) They have internal cross pointers between each LSi, where 1 >= i >= dimension
-		// (2) Each point in the LS has one pointer to its node in _LS (and vice versa)
-		
-		// connect the remaining cross pointers between LS and CLS
-//		for(int i = 0; i < dimensionSize; i++) {
-//			_LS.getLSi(i).loadCrossPointersCLS();
-//			LS.get(i).loadCrossPointersCLS();
-//		}
 	}
 	
 	public LS_Collection clone() {
 
 		LinkedList<DoublyLinkedList> _LS = new LinkedList<DoublyLinkedList>();
 		
-		// create copy of LSi	O(dn)
-		// and create (partial) cross pointers between LS and CLS
-		// partial as in LSi only has a pointer to CLSj ONLY where i==j
+		/*  create copy of LSi	O(dn)
+		 *  and create (partial) cross pointers between LS and CLS
+		 *  partial as in LSi only has a pointer to CLSj ONLY where i==j
+		 */ 
 		for(int i = 0; i < dimensionSize; i++) {
 			try {
 				_LS.add(LS.get(i).cloneReference());
@@ -119,9 +110,10 @@ public class LS_Collection {
 			_LS.get(i).loadCrossPointersCLS_init();
 		}
 		
-		// At this point we have 2 collections LS and CLS
-		// (1) They have internal cross pointers between each LSi, where 1 >= i >= dimension
-		// (2) Each point in the LS has one pointer to its node in CLS (and vice versa)
+		/* At this point we have 2 collections LS and CLS
+		 * (1) They have internal cross pointers between each LSi, where 1 >= i >= dimension
+		 * (2) Each point in the LS has one pointer to its node in CLS (and vice versa)
+		 */
 		
 		// connect the remaining cross pointers between LS and CLS
 		for(int i = 0; i < dimensionSize; i++) {
@@ -129,7 +121,6 @@ public class LS_Collection {
 			LS.get(i).loadCrossPointersCLS();
 		}
 		
-		// pointSet??
 		return new LS_Collection(_LS, pointSet, dimensionSize);
 	}
 	

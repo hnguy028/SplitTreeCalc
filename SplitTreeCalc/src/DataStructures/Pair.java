@@ -2,6 +2,7 @@ package DataStructures;
 
 public class Pair {
 	private DoublyLinkedList l1, l2;
+	
 	public Pair(DoublyLinkedList s1, DoublyLinkedList s2) {
 		l1 = s1;
 		l2 = s2;

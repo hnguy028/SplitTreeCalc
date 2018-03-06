@@ -6,15 +6,13 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import scala.collection.parallel.mutable.ParTrieMap.Size;
-
 public class TreeNode {
 	private	TreeNode leftChild, rightChild;
 	
 	// Pointset Su
 	private DoublyLinkedList Su;
-	
-	// 
+	 
+	// Hyper rectangle
 	private HyperRectangle rectangle;
 	
 	// Rectangle
@@ -32,17 +30,21 @@ public class TreeNode {
 	// For printing purposes
 	private String[] setBrackets = null;
 	
+	/*
+	 *	The partialSplitTree algorithm is implemented in the data structure, as defined by the paper in class
+	 *  (therefore naming convention will reflect it) 
+	 */
 	public TreeNode() {
 		leftChild = null;
 		rightChild = null;
 	}
 	
 	// Rectangle Ro, Collection of DoublyLinkedList LSi
-	public TreeNode(LinkedList<List<Double>> ro2, LS_Collection _LS) {
+	public TreeNode(LinkedList<List<Double>> ro, LS_Collection _LS) {
 		leftChild = null;
 		rightChild = null;
 		
-		Ro = ro2;
+		Ro = ro;
 		LSu = _LS;
 		Su = _LS.getLSi(0).clone();
 		n = Su.size();
@@ -56,6 +58,7 @@ public class TreeNode {
 		n = -1;
 	}
 	
+	// init the partialSplitTree algorithm
 	public void partialSplitTree() {
 		// Check if required info is set
 		if(Ro != null && LSu != null) {
@@ -131,9 +134,6 @@ public class TreeNode {
 		
 		int size_ = 1;
 		
-		System.out.println(LSu.getLSi(xi).size() + ", " + xi);
-		q.printString();
-		
 		while(p_.getCoordinateValueAt(xi) <= h && q_.getCoordinateValueAt(xi) >= h) {
 			p = p_;
 			p_ = p_.getNext();
@@ -192,7 +192,6 @@ public class TreeNode {
 				z.removeCrossPointers_LSi();
 			
 				// 4.3
-				z.printString();
 				z.remove();
 			}
 		}

@@ -49,7 +49,7 @@ public class DoublyLinkedList {
 		size++;
 	}
 	
-	// private method used for cloning a doublylinkedlist
+	// private method used for cloning (deep copy) a doublylinkedlist
 	private void add_clone(PointNode p, List<Double> coords, int sortDimension) throws Exception {
 		
 		if(sortDimension < 0) { throw new Exception("sortDimension < 0 : Error"); }
@@ -133,6 +133,7 @@ public class DoublyLinkedList {
 	public void incrementHead() { head = head.getNext(); }
 	public void decrementTail() { tail = tail.getPrev(); }
 	
+	// set the dimensions this doublylinkedlist is sorted on
 	public void setDimensionRep(int _rep) { 
 		dimensionRep = _rep;
 		
@@ -194,6 +195,8 @@ public class DoublyLinkedList {
 	
 	/*
 	 * Set cross pointers for LSi, 0 < i <= dimension
+	 * 
+	 * At this point LS and CLS 
 	 */
 	public void loadCrossPointersCLS_init() {
 		DoublyLinkedListIterator LS_iter = iterator();
@@ -213,7 +216,10 @@ public class DoublyLinkedList {
 		}
 	}
 	
-	// clone data structure with references - only used once sorted
+	/* 
+	 * clone data structure with references - only used once sorted
+	 * Note that only 2 doublylinkedlist will ever have reference to each other
+	 */
 	public DoublyLinkedList cloneReference() throws Exception {
 		
 		if(dimensionRep < 0) { throw new Exception("DoublyLinkedList has not been sorted"); }
@@ -228,7 +234,7 @@ public class DoublyLinkedList {
 		return dll;
 	}
 
-	// deep copy
+	// deep copy - clone
 	public DoublyLinkedList clone() {
 		DoublyLinkedList dll = new DoublyLinkedList(this.dimensions);
 		
