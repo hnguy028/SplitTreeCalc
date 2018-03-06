@@ -106,8 +106,12 @@ public class PointNode{
 		if(doublyLinkedList.getFirst() == this) { doublyLinkedList.incrementHead(); }
 		if(doublyLinkedList.getLast() == this) { doublyLinkedList.decrementTail(); }
 		
-		if(prev != null) { prev.setNext(next); prev = null; }
-		if(next != null) { next.setPrev(prev); next = null; }
+		if(prev != null) { prev.setNext(next); }
+		if(next != null) { next.setPrev(prev); }
+		
+		next = null;
+		prev = null;
+		
 		doublyLinkedList.decrementSize();
 		
 		// clean up cross pointers to "this" object

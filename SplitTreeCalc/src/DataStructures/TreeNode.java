@@ -6,6 +6,8 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import scala.collection.parallel.mutable.ParTrieMap.Size;
+
 public class TreeNode {
 	private	TreeNode leftChild, rightChild;
 	
@@ -129,6 +131,9 @@ public class TreeNode {
 		
 		int size_ = 1;
 		
+		System.out.println(LSu.getLSi(xi).size() + ", " + xi);
+		q.printString();
+		
 		while(p_.getCoordinateValueAt(xi) <= h && q_.getCoordinateValueAt(xi) >= h) {
 			p = p_;
 			p_ = p_.getNext();
@@ -187,6 +192,7 @@ public class TreeNode {
 				z.removeCrossPointers_LSi();
 			
 				// 4.3
+				z.printString();
 				z.remove();
 			}
 		}

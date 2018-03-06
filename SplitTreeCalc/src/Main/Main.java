@@ -28,9 +28,8 @@ public class Main {
 		List<Double> f = new LinkedList<Double>(Arrays.asList(11.0, 2.0));
 		List<Double> g = new LinkedList<Double>(Arrays.asList(11.0, 9.0));
 		List<Double> h = new LinkedList<Double>(Arrays.asList(12.0, 0.0));
-		List<Double> ee = new LinkedList<Double>(Arrays.asList(12.0, 0.0));
 		
-		LinkedList<List<Double>> pointSet = new LinkedList<List<Double>>(Arrays.asList(a, b, c, d, e, f, g, h, ee));
+		LinkedList<List<Double>> pointSet = new LinkedList<List<Double>>(Arrays.asList(a, b, c, d, e, f, g, h));
 		
 		if(args.length > 0) {
 			try {
@@ -43,7 +42,7 @@ public class Main {
 			System.exit(0);
 		}
 		
-		// check for duplicates
+		// check for duplicates, and different dimension size
 		checkConstraints(pointSet);
 		
 		// Run splitTreeAlgorithm
@@ -125,8 +124,18 @@ public class Main {
 	
 	private static void checkConstraints(LinkedList<List<Double>> input) {
 		HashSet<String> stringInput = new HashSet<String>();
+		int dimension = input.getFirst().size();
 		
 		for(List<Double> list : input) {
+			if(list.size() != dimension) {
+				try {
+					throw new Exception("Error: incorrect dimension size(s) - " + input.getFirst().toString() + ", "+ list.toString());
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+			}
+			
 			if(!stringInput.add(list.toString()))
 				try {
 					throw new Exception("Error: duplicate coordinate in input set - " + list.toString());
