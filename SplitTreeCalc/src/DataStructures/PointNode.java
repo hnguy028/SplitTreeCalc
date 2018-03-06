@@ -1,13 +1,13 @@
 package DataStructures;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 public class PointNode{
 	
 	private DoublyLinkedList doublyLinkedList;
 	
-	private double[] coords;
+	private List<Double> coords;
 	private int dimensions;
 	private int dimensionSortedOn;
 	
@@ -19,12 +19,12 @@ public class PointNode{
 	
 	private TreeNode treeNode;
 	
-	public PointNode(DoublyLinkedList dll, double[] _coords) {
+	public PointNode(DoublyLinkedList dll, List<Double> point) {
 		
 		this.doublyLinkedList = dll;
 		
-		this.coords = _coords;
-		this.dimensions = this.coords.length;
+		this.coords = point;
+		this.dimensions = this.coords.size();
 		this.dimensionSortedOn = -1;
 		
 		this.crossPointersLS = new ArrayList<PointNode>(dimensions);
@@ -39,12 +39,12 @@ public class PointNode{
 		this.prev = null;
 	}
 	
-	public PointNode(DoublyLinkedList dll, PointNode _p, double[] _coords, int _sortDim) {
+	public PointNode(DoublyLinkedList dll, PointNode _p, List<Double> _coords, int _sortDim) {
 		
 		this.doublyLinkedList = dll;
 		
 		this.coords = _coords;
-		this.dimensions = this.coords.length;
+		this.dimensions = this.coords.size();
 		this.dimensionSortedOn = _sortDim;
 		
 		this.crossPointersLS = new ArrayList<PointNode>(dimensions);
@@ -115,7 +115,7 @@ public class PointNode{
 		for(PointNode pointNode : crossPointersCLS) { if(pointNode != null) pointNode.setCrossPointersCLS(null, dimensionSortedOn); }
 	}
 	
-	public double[] getCoordinates() { return coords; }
+	public List<Double> getCoordinates() { return coords; }
 	
 	public int getDimensions() { return dimensions; }
 	
@@ -123,14 +123,14 @@ public class PointNode{
 	
 	public void setSortDimension(int _dim) { dimensionSortedOn = _dim; }
 	
-	public double getCoordinateValueAt(int _dimension) { return coords[_dimension]; }
+	public double getCoordinateValueAt(int _dimension) { return coords.get(_dimension); }
 	
 	public PointNode getOccurrenceInCLS() { return crossPointersCLS.get(dimensionSortedOn); }
 	
 	public int compareTo(PointNode _point, int _dimension) {
 		if(_dimension >= _point.getDimensions() || _dimension >= dimensions) { throw new IndexOutOfBoundsException(); }
 		
-		if(coords[_dimension] == _point.getCoordinateValueAt(_dimension)) {
+		if(coords.get(_dimension) == _point.getCoordinateValueAt(_dimension)) {
 			// iterate all other dimension excluding the given dimension to check equivalence
 			for(int i = 0; i < dimensions; i++) {
 				if(i != _dimension) {
@@ -140,7 +140,7 @@ public class PointNode{
 			}
 			return 0; 
 		}
-		if(coords[_dimension] > _point.getCoordinateValueAt(_dimension)) { return 1; }
+		if(coords.get(_dimension) > _point.getCoordinateValueAt(_dimension)) { return 1; }
 		return -1;
 	}
 	
@@ -150,12 +150,12 @@ public class PointNode{
 	private int compareToStrict(PointNode _point, int _dimension) {
 		if(_dimension >= _point.getDimensions() || _dimension >= dimensions) { throw new IndexOutOfBoundsException(); }
 		
-		if(coords[_dimension] == _point.getCoordinateValueAt(_dimension)) { return 0;  }
-		if(coords[_dimension] > _point.getCoordinateValueAt(_dimension)) { return 1; }
+		if(coords.get(_dimension) == _point.getCoordinateValueAt(_dimension)) { return 0;  }
+		if(coords.get(_dimension) > _point.getCoordinateValueAt(_dimension)) { return 1; }
 		return -1;
 	}
 	
-	public String toString() { return Arrays.toString(coords).replace("[", "(").replace("]", ")"); }
+	public String toString() { return coords.toString().replace("[", "(").replace("]", ")"); }
 	
-	public void printString() { System.out.println(Arrays.toString(coords).replace("[", "(").replace("]", ")")); }
+	public void printString() { System.out.println(coords.toString().replace("[", "(").replace("]", ")")); }
 }

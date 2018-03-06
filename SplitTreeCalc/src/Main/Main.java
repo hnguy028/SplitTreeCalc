@@ -4,13 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
-
-import org.graphstream.graph.Graph;
-import org.graphstream.graph.Node;
-import org.graphstream.graph.implementations.SingleGraph;
+import java.util.List;
 
 import DataStructures.*;
 import WSPD.*;
@@ -21,30 +19,18 @@ public class Main {
 	static LinkedList<double[]> pointSet = null;
 	
 	public static void main(String[] args) {
-		// GUI
-		Graph graph = new SingleGraph("Tutorial 1");
-		graph.addNode("B").addAttribute("xy", 1, 1);
-		
-		// probably use grey overlay for ball
-		Node aNode = graph.addNode("A");
-		aNode.addAttribute("xy", 1, 1);
-		aNode.addAttribute("ui.style", "fill-color: grey; size: 20px; stroke-mode: plain; stroke-color: black;");
-		graph.display(false);
-		
 		// Data
-		double[] a = new double[]{0.0, 0.0};
-		double[] b = new double[]{1.0, 10.0}; 
-		double[] c = new double[]{3.0/2.0, 1.0}; 
-		double[] d = new double[]{2.0, 5.0/2.0}; 
-		double[] e = new double[]{8.0, 7.0}; 
-		double[] f = new double[]{11.0, 2.0};
-		double[] g = new double[]{11.0, 9.0};
-		double[] h = new double[]{12.0, 0.0};
-		double[] neg1 = new double[]{-12.0, 0.0};
-		double[] dup = new double[]{1.0, 10.0};
-		double[] neg2 = new double[]{1.0, -10.0};
+		List<Double> a = new LinkedList<Double>(Arrays.asList(0.0, 0.0));
+		List<Double> b = new LinkedList<Double>(Arrays.asList(1.0, 10.0)); 
+		List<Double> c = new LinkedList<Double>(Arrays.asList(3.0/2.0, 1.0)); 
+		List<Double> d = new LinkedList<Double>(Arrays.asList(2.0, 5.0/2.0)); 
+		List<Double> e = new LinkedList<Double>(Arrays.asList(8.0, 7.0)); 
+		List<Double> f = new LinkedList<Double>(Arrays.asList(11.0, 2.0));
+		List<Double> g = new LinkedList<Double>(Arrays.asList(11.0, 9.0));
+		List<Double> h = new LinkedList<Double>(Arrays.asList(12.0, 0.0));
+		List<Double> ee = new LinkedList<Double>(Arrays.asList(12.0, 0.0));
 		
-		LinkedList<double[]> pointSet = new LinkedList<double[]>(Arrays.asList(a, b, c, d, e, f, g, h));
+		LinkedList<List<Double>> pointSet = new LinkedList<List<Double>>(Arrays.asList(a, b, c, d, e, f, g, h, ee));
 		
 		if(args.length > 0) {
 			try {
@@ -57,6 +43,9 @@ public class Main {
 			System.exit(0);
 		}
 		
+		// check for duplicates
+		checkConstraints(pointSet);
+		
 		// Run splitTreeAlgorithm
 		SplitTree tree = new SplitTree();
 		tree.FastSplitTree(pointSet, null);
@@ -64,10 +53,12 @@ public class Main {
 		System.out.println("Split Tree:");
 		tree.print();
 		
+		System.out.println("\n\n----------------------------------------------------------------\n\n");
+		
 		LinkedList<Pair> resultSet = null;
 		
 		// Run computeWSPD on tree
-		if(pointSet.getFirst().length == 2) {
+		if(pointSet.getFirst().size() == 2) {
 			System.out.println("WSPD:");
 			
 			WSPD algorithms = new WSPD(); 
@@ -80,31 +71,46 @@ public class Main {
 			}
 		}
 		
+		System.out.println("\n\n----------------------------------------------------------------\n\n");
+		
+		System.out.println("t-Spanner:");
+		
 		// Run build t-spanner
-		new TSpanner().BuildSpannerFromWSPD(resultSet, tree.getTreeRoot().getSu(), 2);
+		TSpanner tSpanner = new TSpanner();
+		tSpanner.BuildSpannerFromWSPD(resultSet, tree.getTreeRoot().getSu(), 2);
+		
+		// t-Spanner graph G = (S,E)
+		DoublyLinkedList S = tSpanner.getPointSet();
+		HashMap<String, Edge> E = tSpanner.getEdgeList();
+		
+		// Print point set
+		System.out.print("S: ");
+		S.printSet();
+		
+		// Print edge list
+		System.out.print("E: ");
+		for(String edge : E.keySet()) {
+			System.out.print(E.get(edge).toString() + ", ");
+		}
 	}
 	
-	public static LinkedList<double[]> loadData(String filepath) throws IOException {
+	public static LinkedList<List<Double>> loadData(String filepath) throws IOException {
 		
 		File file = new File(filepath);
 		
 		if(file.isFile()) {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			
-			LinkedList<double[]> res = new LinkedList<double[]>();  
+			LinkedList<List<Double>> res = new LinkedList<List<Double>>();  
 			
 			String line = "";
-			LinkedList<Double> coords = new LinkedList<Double>();
-			double[] tcoords;
+			List<Double> coords = new LinkedList<Double>();
 			
 			while((line = br.readLine()) != null) {
 				coords = new LinkedList<Double>();
 				for(String item : line.split(",")) { coords.add(Double.parseDouble(item)); }
-					
-				tcoords = new double[coords.size()];
-				for(int i = 0; i < coords.size(); i++) { tcoords[i] = coords.get(i); }
 				
-				res.add(tcoords);
+				res.add(coords);
 			}
 			
 			br.close();
@@ -115,5 +121,20 @@ public class Main {
 		System.out.println("File not found");
 		
 		return null;
+	}
+	
+	private static void checkConstraints(LinkedList<List<Double>> input) {
+		HashSet<String> stringInput = new HashSet<String>();
+		
+		for(List<Double> list : input) {
+			if(!stringInput.add(list.toString()))
+				try {
+					throw new Exception("Error: duplicate coordinate in input set - " + list.toString());
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+		}
+		
 	}
 }

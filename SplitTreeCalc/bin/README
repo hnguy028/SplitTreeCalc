@@ -1,20 +1,3 @@
-Major Points of Program
-
-Explain implementation for these 2 datastructures and how the pointers are set up in O(dn) time
-- DoublyLinkedList.java
-- LS_Collection.java
-
-- FastSplit Tree is as described in the handout
-
-Compute WSPD
-- Using ritter's algorithm we can do this in O(dn) time also (+ some error 5%-15% ?)
-- For isWellSeparated 
-	- point queries are done using java's double (64 bits) therefore approx 16 decimal precision
-
-TSpanner from WSPD
-
-
-
-Problems:
-Duplicate points generate a null pointer exception somewhere in the partialSplitTree Algorithm
-	- Solution don't add duplicate points to the datastructure - this is not very nice :( 
+TODO
+Check for duplicates during preprocessing
+Finish report write up 

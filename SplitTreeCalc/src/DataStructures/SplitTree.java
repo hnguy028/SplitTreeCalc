@@ -1,11 +1,14 @@
 package DataStructures;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 public class SplitTree {
 	
-	private LinkedList<double[]> Su;
-	private LinkedList<double[]> Ro;
+	private LinkedList<List<Double>> Su;
+	private LinkedList<List<Double>> Ro;
 	
 	private LS_Collection LS;
 	
@@ -13,10 +16,10 @@ public class SplitTree {
 	
 	private TreeNode root;
 	
-	public void FastSplitTree(LinkedList<double[]> S, LinkedList<double[]> R) {
-		Su = S;
+	public void FastSplitTree(LinkedList<List<Double>> pointSet, LinkedList<List<Double>> R) {
+		Su = pointSet;
 		Ro = R;
-		dimensions = S.getFirst().length;
+		dimensions = pointSet.getFirst().size();
 		
 		preProcess();
 		
@@ -42,9 +45,9 @@ public class SplitTree {
 	}
 	
 	// Used to find the initial rectangle that bounds the point set
-	private LinkedList<double[]> computeBoundingBox(LS_Collection LS) {
+	private LinkedList<List<Double>> computeBoundingBox(LS_Collection LS) {
 		int dimensions = LS.getDimensionSize();
-		LinkedList<double[]> R = new LinkedList<double[]>();
+		LinkedList<List<Double>> R = new LinkedList<List<Double>>();
 		
 		for(int i = 0; i < dimensions; i ++) {
 			DoublyLinkedList LSi = LS.getLSi(i);
@@ -52,7 +55,7 @@ public class SplitTree {
 			double _min = LSi.getFirst().getCoordinateValueAt(i);
 			double _max = LSi.getLast().getCoordinateValueAt(i);
 			
-			R.add(new double[] {_min, _max});
+			R.add(new ArrayList<Double> (Arrays.asList(_min, _max)));
 		}
 		return R;
 	}

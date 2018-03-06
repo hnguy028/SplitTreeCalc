@@ -2,22 +2,23 @@ package DataStructures;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class LS_Collection {
 	private LinkedList<DoublyLinkedList> LS;	// LSi
-	private LinkedList<double[]> pointSet;
+	private LinkedList<List<Double>> pointSet;
 	private int dimensionSize;
 	
-	public LS_Collection(LinkedList<double []> _pointSet, int _dimension) {
+	public LS_Collection(LinkedList<List<Double>> su, int _dimension) {
 		LS = new LinkedList<DoublyLinkedList>();
-		pointSet = _pointSet;
+		pointSet = su;
 		dimensionSize = _dimension;
 		
 		DoublyLinkedList temp = new DoublyLinkedList(dimensionSize);
 		LinkedList<DoublyLinkedListIterator> iterators = new LinkedList<DoublyLinkedListIterator>();
 		
 		// add points to LS
-		for(double[] point : pointSet) { temp.add(point); }
+		for(List<Double> point : pointSet) { temp.add(point); }
 		
 		// set LSi's, and LSi iterators
 		for(int i=0; i < dimensionSize; i++) {
@@ -47,7 +48,7 @@ public class LS_Collection {
 		for(int i = 0; i < dimensionSize; i++) { LS.get(i).sort(i); LS.get(i).setDimensionRep(i); }
 	}
 	
-	public LS_Collection(LinkedList<DoublyLinkedList> _LS, LinkedList<double[]> _pointSet, int _dimension) {
+	public LS_Collection(LinkedList<DoublyLinkedList> _LS, LinkedList<List<Double>> _pointSet, int _dimension) {
 		LS = _LS;
 		pointSet = _pointSet;
 		dimensionSize = _dimension;
@@ -65,7 +66,7 @@ public class LS_Collection {
 		}
 		
 		// not needed
-		pointSet = new LinkedList<double[]>();
+		pointSet = new LinkedList<List<Double>>();
 	}
 	
 	public DoublyLinkedList getLSi(int i) { return LS.get(i); }

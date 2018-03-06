@@ -66,17 +66,17 @@ public class TSpanner {
 		switch (dimensions) {
 		case 1:
 			gNode = graph.addNode(node.toString());
-			gNode.addAttribute("xy", node.getCoordinates()[0]);
+			gNode.addAttribute("xy", node.getCoordinates().get(0));
 			gNode.addAttribute("ui.label", node.toString());
 			break;
 		case 2:
 			gNode = graph.addNode(node.toString());
-			gNode.addAttribute("xy", node.getCoordinates()[0], node.getCoordinates()[1]);
+			gNode.addAttribute("xy", node.getCoordinates().get(0), node.getCoordinates().get(1));
 			gNode.addAttribute("ui.label", node.toString());
 			break;
 		case 3:
 			gNode = graph.addNode(node.toString());
-			gNode.addAttribute("xy", node.getCoordinates()[0], node.getCoordinates()[1], node.getCoordinates()[2]);
+			gNode.addAttribute("xy", node.getCoordinates().get(0), node.getCoordinates().get(1), node.getCoordinates().get(2));
 			gNode.addAttribute("ui.label", node.toString());
 			break;
 		default:

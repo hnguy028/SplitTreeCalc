@@ -2,6 +2,7 @@ package DataStructures;
 
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 public class DoublyLinkedList {
 	private PointNode head;
@@ -25,8 +26,8 @@ public class DoublyLinkedList {
 		dimensionRep = -1;
 	}
 	
-	public void add(double[] coords) {
-		PointNode temp = new PointNode(this, coords);
+	public void add(List<Double> point) {
+		PointNode temp = new PointNode(this, point);
 		if(head == null || tail == null) {
 			head = temp; 
 			tail = temp;
@@ -49,7 +50,7 @@ public class DoublyLinkedList {
 	}
 	
 	// private method used for cloning a doublylinkedlist
-	private void add_clone(PointNode p, double[] coords, int sortDimension) throws Exception {
+	private void add_clone(PointNode p, List<Double> coords, int sortDimension) throws Exception {
 		
 		if(sortDimension < 0) { throw new Exception("sortDimension < 0 : Error"); }
 		

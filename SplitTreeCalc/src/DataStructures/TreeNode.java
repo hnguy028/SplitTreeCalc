@@ -1,8 +1,10 @@
 package DataStructures;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 public class TreeNode {
 	private	TreeNode leftChild, rightChild;
@@ -14,10 +16,10 @@ public class TreeNode {
 	private HyperRectangle rectangle;
 	
 	// Rectangle
-	private	LinkedList<double[]> Ro;
+	private	LinkedList<List<Double>> Ro;
 	
 	// Bounding Rectangle
-	private LinkedList<double[]> Ru;
+	private LinkedList<List<Double>> Ru;
 	
 	// Collection of linkedlists of Su, sorted by dimension 
 	private LS_Collection LSu;
@@ -34,17 +36,17 @@ public class TreeNode {
 	}
 	
 	// Rectangle Ro, Collection of DoublyLinkedList LSi
-	public TreeNode(LinkedList<double[]> _Ro, LS_Collection _LS) {
+	public TreeNode(LinkedList<List<Double>> ro2, LS_Collection _LS) {
 		leftChild = null;
 		rightChild = null;
 		
-		Ro = _Ro;
+		Ro = ro2;
 		LSu = _LS;
 		Su = _LS.getLSi(0).clone();
 		n = Su.size();
 	}
 	
-	public TreeNode(LinkedList<double[]> _Ro) {
+	public TreeNode(LinkedList<List<Double>> _Ro) {
 		leftChild = null;
 		rightChild = null; 
 		
@@ -145,13 +147,13 @@ public class TreeNode {
 	}
 	
 	private void step4(PointNode p, int xi, double h, int size_) {
-		LinkedList<double[]> R1 = new LinkedList<double[]>();
-		LinkedList<double[]> R2 = new LinkedList<double[]>();
+		LinkedList<List<Double>> R1 = new LinkedList<List<Double>>();
+		LinkedList<List<Double>> R2 = new LinkedList<List<Double>>();
 		
 		for(int i = 0; i < Ru.size(); i++) {
 			if(xi == i) {
-				R1.add(new double[] {Ru.get(i)[0], h});
-				R2.add(new double[] {h, Ru.get(i)[1]});
+				R1.add(new ArrayList<Double> (Arrays.asList(Ru.get(i).get(0), h)));
+				R2.add(new ArrayList<Double> (Arrays.asList(h, Ru.get(i).get(1))));
 			} else {
 				R1.add(Ru.get(i));
 				R2.add(Ru.get(i));
@@ -195,13 +197,13 @@ public class TreeNode {
 	}
 	
 	private void step5(PointNode q, int xi, double h, int size_) {
-		LinkedList<double[]> R1 = new LinkedList<double[]>();
-		LinkedList<double[]> R2 = new LinkedList<double[]>();
+		LinkedList<List<Double>> R1 = new LinkedList<List<Double>>();
+		LinkedList<List<Double>> R2 = new LinkedList<List<Double>>();
 		
 		for(int i = 0; i < Ru.size(); i++) {
 			if(xi == i) {
-				R1.add(new double[] {Ru.get(i)[0], h});
-				R2.add(new double[] {h, Ru.get(i)[1]});
+				R1.add(new ArrayList<Double> (Arrays.asList(Ru.get(i).get(0), h)));
+				R2.add(new ArrayList<Double> (Arrays.asList(h, Ru.get(i).get(1))));
 			} else {
 				R1.add(Ru.get(i));
 				R2.add(Ru.get(i));
@@ -283,13 +285,13 @@ public class TreeNode {
 	
 	public DoublyLinkedList getSu() { return Su; }
 	
-	public void setRo(LinkedList<double[]> _Ro) { Ro = _Ro; }
+	public void setRo(LinkedList<List<Double>> _Ro) { Ro = _Ro; }
 	
-	public void setRu(LinkedList<double[]> _Ru) { Ru = _Ru; }
+	public void setRu(LinkedList<List<Double>> _Ru) { Ru = _Ru; }
 	
 	public HyperRectangle getHyperRectangle() { return rectangle; }
 	
-	public LinkedList<double[]> getRu() { if(Ru == null) { return new LinkedList<double[]>(Arrays.asList(Su.getFirst().getCoordinates())); } return Ru; }
+	public LinkedList<List<Double>> getRu() { if(Ru == null) { return new LinkedList<List<Double>>(Arrays.asList(Su.getFirst().getCoordinates())); } return Ru; }
 	
 	public void setLeftChild(TreeNode node) { leftChild = node; }
 	
@@ -320,5 +322,21 @@ public class TreeNode {
 		return output;
 	}
 	
-	public void print() { System.out.print(toString(0)); }
+	//public void print() { System.out.print(toString(0)); }
+	public void print() { printNavigationTree("", true); }
+	
+	private void printNavigationTree(String prefix, boolean isTail) {
+		System.out.println(prefix + (isTail ? "+-- " : "|-- ") + Su.toString(setBrackets));
+		
+		if(leftChild != null || rightChild != null) {
+			if(rightChild == null) {
+				leftChild.printNavigationTree(prefix + (isTail ? "    " : "|   "), true);
+			} else if(leftChild == null) {
+				rightChild.printNavigationTree(prefix + (isTail ? "    " : "|   "), true);
+			} else {
+				leftChild.printNavigationTree(prefix + (isTail ? "    " : "|   "), false);
+				rightChild.printNavigationTree(prefix + (isTail ? "    " : "|   "), true);
+			}
+		}
+	}
 }
