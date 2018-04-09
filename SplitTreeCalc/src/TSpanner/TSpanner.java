@@ -17,14 +17,17 @@ public class TSpanner {
 	private Graph graph;
 	private int min_dim = 2;
 	private int max_dim = 3;
+	private boolean displayGraph;
 	
-	public TSpanner() {}
+	public TSpanner(boolean _displayGraph) { displayGraph = _displayGraph; }
 	
 	public void BuildSpannerFromWSPD(LinkedList<Pair> wspd, DoublyLinkedList pointSet, int dimensions) {
 		
+		boolean drawGraph = dimensions >= min_dim && dimensions <= max_dim && displayGraph;
+		
 		S = pointSet.clone();
 		
-		if(dimensions >= min_dim && dimensions <= max_dim) {
+		if(drawGraph) {
 			graph = new SingleGraph("T-Spanner");
 			
 			DoublyLinkedListIterator iterator = pointSet.iterator();
@@ -48,13 +51,13 @@ public class TSpanner {
 			// add to edge list
 			E.put(firstRepNode + secondRepNode, new Edge(pair.getFirst().getFirst().getCoordinates(), pair.getLast().getFirst().getCoordinates()));
 			
-			if(dimensions >= min_dim && dimensions <= max_dim) {
+			if(drawGraph) {
 				// add the edge to the gui graph
 				graph.addEdge(firstRepNode + secondRepNode, firstRepNode, secondRepNode);
 			}
 		}
 		
-		if(dimensions >= min_dim && dimensions <= max_dim) {
+		if(drawGraph) {
 			graph.display(false);
 		}
 	}

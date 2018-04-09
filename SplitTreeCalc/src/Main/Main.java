@@ -35,27 +35,64 @@ public class Main {
 		
 		LinkedList<List<Double>> pointSet = new LinkedList<List<Double>>(Arrays.asList(a, b, c, d, e, f, g, h));
 		
+		double separationRatio = 4.00001;
+		
+		String helpmsg = "[-h | --help] [-f filepath | -r [numPoints dimension minPoint maxPoint [pointPrecision]] [-s separationRatio]" +
+							"-r : randomly generated datapoints, with optional parameters defining rng\n" + 
+							"-s : sepration ratio for WSPD construction" +
+							"-sg : do not generate t-spanner graph";
+		
+		HashMap<String, List<String>> input = new HashMap<String, List<String>>();
+		
 		// Checks for filepath for pointset
 		if(args.length > 0) {
-			if(args[0].equals("-h")) {
-				System.out.println("[filepath] | [-random numPoints dimension minPoint maxPoint [pointPrecision]] ");
+			String key = "";
+			
+			// parse args
+			for(int i = 0; i < args.length; i++) {
+				if((args[i].charAt(0) == '-') && !isNumeric(args[i])) {
+					key = args[i];
+					if(input.containsKey(key)) { 
+						// error
+					}
+					
+					input.put(key, new ArrayList<String>());
+				} else {
+					input.get(key).add(args[i]); 
+				}
+			}
+			
+			
+			if(input.containsKey("-h") || input.containsKey("--help")) {
+				System.out.println(helpmsg);
 				System.exit(1);
 			}
-			if(new File(args[0]).isFile()) {
+			
+
+			if(input.containsKey("-f")) {
 				try {
-					pointSet = loadData(args[0]);
+					pointSet = loadData(input.get("-f").get(0));
 				} catch (IOException e1) { e1.printStackTrace(); }
-			} else if(args[0].equalsIgnoreCase("-random")) {
+			} else if(input.containsKey("-r")) {
+				List<String> vars = input.get("-r");
+				
 				int precision = 2;
-				if(args.length >= 5) {
-					if (args.length >= 6) { 
-						precision = Integer.parseInt(args[5]); 
+				
+				if(vars.size() >= 4) {
+					if (vars.size() >= 5) { 
+						precision = Integer.parseInt(vars.get(4)); 
 						precision = (precision >= 15) ? 2 : precision;
 					}
-					pointSet = randomDataSet(Integer.parseInt(args[1]), Integer.parseInt(args[2]), Double.parseDouble(args[3]), Double.parseDouble(args[4]), precision);
+					pointSet = randomDataSet(Integer.parseInt(vars.get(0)), Integer.parseInt(vars.get(1)), Double.parseDouble(vars.get(2)), Double.parseDouble(vars.get(3)), precision);
 				} else {
 					pointSet = randomDataSet(rng.nextInt(50) + 1, rng.nextInt(5) + 1, 100.0, -100.0, precision);
 				}
+			} else {
+				System.out.println("No data input, running program on template data.");
+			}
+			
+			if(input.containsKey("-s")) {
+				separationRatio = Double.parseDouble(input.get("-s").get(0));
 			}
 		}
 		
@@ -86,7 +123,7 @@ public class Main {
 		WSPD algorithms = new WSPD(); 
 		
 		// Run computeWSPD on tree
-		resultSet = algorithms.ComputeWSPD(tree.getTreeRoot(), 4.00001);
+		resultSet = algorithms.ComputeWSPD(tree.getTreeRoot(), separationRatio);
 			
 		// Print WSPD
 		for(int i = 0; i < resultSet.size(); i++) {
@@ -99,7 +136,7 @@ public class Main {
 		System.out.println("t-Spanner:");
 		
 		// Run build t-spanner
-		TSpanner tSpanner = new TSpanner();
+		TSpanner tSpanner = new TSpanner(!input.containsKey("-silent-graph") && !input.containsKey("-sg"));
 		tSpanner.BuildSpannerFromWSPD(resultSet, tree.getTreeRoot().getSu(), dimensions);
 		
 		// t-Spanner graph G = (S,E)
@@ -115,6 +152,12 @@ public class Main {
 		for(String edge : E.keySet()) {
 			System.out.print(E.get(edge).toString() + ", ");
 		}
+	}
+	
+	private static boolean isNumeric(String s) {
+		try { Double.parseDouble(s); }
+		catch(Exception e) { return false; }  
+		return true;  
 	}
 	
 	/*
