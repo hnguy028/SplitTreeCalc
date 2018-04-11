@@ -9,7 +9,10 @@ public class HyperRectangle {
 	private LinkedList<List<Double>> Ro; // Ro(u) := R 		Rectangle containing the bounding box
 	private LinkedList<List<Double>> R; // R(u) := R(Su)		Bounding box
 	
+	// dimension of the hyperplane
 	private int hyperplane_index;
+	
+	// split point of the hyperplane
 	private double hyperplaneSplitPoint;
 	
 	private LinkedList<List<Double>> vertices;
@@ -22,6 +25,9 @@ public class HyperRectangle {
 		computeBoundingBox(_LS);
 	}
 	
+	/* 
+	 * Compute hyoerplane and bounding box given LSi
+	 */
 	private void computeBoundingBox(LS_Collection LS) {
 		int dimensions = LS.getDimensionSize();
 		int _hyperplane_index = 0;
@@ -46,7 +52,7 @@ public class HyperRectangle {
 	}
 	
 	/*
-	 *	Return the length of the max dimensions of the hyperrectangle 
+	 *	Return the length of the longest dimensions of the hyperrectangle 
 	 */
 	public double getLmax() {
 		List<Double> l = R.get(hyperplane_index);

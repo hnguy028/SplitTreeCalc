@@ -65,7 +65,7 @@ public class LS_Collection {
 			LS.add(ls);
 		}
 		
-		// not needed
+		// not really required
 		pointSet = new LinkedList<List<Double>>();
 	}
 	

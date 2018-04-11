@@ -44,6 +44,7 @@ public class Ball {
 		
 		List<Double> coord = null;
 		
+		// Find the min and max points for each dimension in our point set
 		for(int i = 0; i < points.size(); i++) {
 			coord = points.get(i);
 			for(int d = 0; d < dimensions; d++) {
@@ -52,6 +53,7 @@ public class Ball {
 			}
 		}
 		
+		// calculate the domain/bounds of our points
 		List<Double> cdiff = new ArrayList<Double>(Collections.nCopies(dimensions, 0.0));
 		double diameter = 0.0;
 		
@@ -96,7 +98,7 @@ public class Ball {
 		}
 	}
 	
-	// euclidean distance between the center point of 2 balls
+	// Euclidean distance between the center point of 2 balls
 	public double getDistance(Ball _b) {
 		List<Double> c = _b.getCenter();
 		double res = 0.0;

@@ -12,9 +12,13 @@ public class DoublyLinkedList {
 	
 	private PointNodeComparator comparator;
 	
+	// dimension of point set
 	private int dimensions;
+	
+	// dimension on which this doublylinkedlist is sorted on
 	private int dimensionRep;
 	
+	// bracket format for output
 	private String[] setBrackets = new String[]{"[","]"};
 	
 	public DoublyLinkedList(int _dimensions) {
@@ -65,6 +69,7 @@ public class DoublyLinkedList {
 		size++;
 	}
 	
+	// Get node at given index in the doublylinkedlist
 	public PointNode get(int index) {
 		if(index < 0 || size < 1 || index >= size) { throw new ArrayIndexOutOfBoundsException(); }
 		
@@ -86,6 +91,7 @@ public class DoublyLinkedList {
 	public void remove(int index) {
 		if(index < 0 || size < 1 || index >= size) { throw new IndexOutOfBoundsException(); }
 		
+		// find pointnode of at the given index
 		PointNode temp = head;
 		
 		if(index == 0) { head = temp.getNext(); }
@@ -93,6 +99,7 @@ public class DoublyLinkedList {
 		
 		for(int i = 0; i < index; i++) { temp = temp.getNext(); }
 		
+		// set pointers of neighbours to each other
 		PointNode _prev = temp.getPrev();
 		PointNode _next = temp.getNext();
 		
@@ -151,6 +158,7 @@ public class DoublyLinkedList {
 	
 	public int size() { return size; }
 	
+	// Sort doublylinkedlist with respect to the given dimension
 	public void sort(int dimension) {
 		if(dimension > dimensions || dimension < 0) { throw new IndexOutOfBoundsException(); }
 		
@@ -174,6 +182,7 @@ public class DoublyLinkedList {
 		return result;
 	}
 	
+	// load doublylinkedlist from a linkedlist of pointnodes
 	private void loadList(LinkedList<PointNode> l) {
 		head = null;
 		tail = null;
@@ -217,7 +226,7 @@ public class DoublyLinkedList {
 	}
 	
 	/* 
-	 * clone data structure with references - only used once sorted
+	 * Clone data structure with references - only used once sorted
 	 * Note that only 2 doublylinkedlist will ever have reference to each other
 	 */
 	public DoublyLinkedList cloneReference() throws Exception {

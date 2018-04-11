@@ -8,15 +8,23 @@ public class PointNode{
 	private DoublyLinkedList doublyLinkedList;
 	
 	private List<Double> coords;
+	
+	// dimension of the point set
 	private int dimensions;
+	
+	// dimensions of which this point is sorted on in the doublylinkedlist
 	private int dimensionSortedOn;
 	
+	// cross pointers to other doublylinkedlists within LS
 	private ArrayList<PointNode> crossPointersLS;
+	
+	// cross pointer to copy LSi
 	private ArrayList<PointNode> crossPointersCLS;
 	
 	private PointNode next;
 	private PointNode prev;
 	
+	// used in the split tree algorithm
 	private TreeNode treeNode;
 	
 	public PointNode(DoublyLinkedList dll, List<Double> point) {
@@ -104,6 +112,7 @@ public class PointNode{
 		}
 	}
 	
+	// remove this pointnode and pointers to it in LS and CLS
 	public void remove() {
 		if(doublyLinkedList.getFirst() == this) { doublyLinkedList.incrementHead(); }
 		if(doublyLinkedList.getLast() == this) { doublyLinkedList.decrementTail(); }
@@ -131,8 +140,16 @@ public class PointNode{
 	
 	public double getCoordinateValueAt(int _dimension) { return coords.get(_dimension); }
 	
+	/*
+	 *	Get pointer the pointnode equivalent to "this" in CLS, at the same sorted dimension 
+	 */
 	public PointNode getOccurrenceInCLS() { return crossPointersCLS.get(dimensionSortedOn); }
 	
+	/*
+	 * Compares 2 point nodes given the dimension
+	 * ie p1 = (x1, x2, x3), p2 = (y1, y2, y3), dimension = 2
+	 * compare x2 to y2, and if they're equal check the other dimensions 
+	 */
 	public int compareTo(PointNode _point, int _dimension) {
 		if(_dimension >= _point.getDimensions() || _dimension >= dimensions) { throw new IndexOutOfBoundsException(); }
 		
@@ -152,6 +169,8 @@ public class PointNode{
 	
 	/*
 	 *  strictly limit the comparison of two points the the specified dimension
+	 *  ie p1 = (x1, x2, x3), p2 = (y1, y2, y3), dimension = 2
+	 *  compare x2 to y2
 	 */
 	private int compareToStrict(PointNode _point, int _dimension) {
 		if(_dimension >= _point.getDimensions() || _dimension >= dimensions) { throw new IndexOutOfBoundsException(); }

@@ -40,7 +40,7 @@ public class Main {
 		String helpmsg = "[-h | --help] [-f filepath | -r [numPoints dimension minPoint maxPoint [pointPrecision]] [-s separationRatio]" +
 							"-r : randomly generated datapoints, with optional parameters defining rng\n" + 
 							"-s : sepration ratio for WSPD construction" +
-							"-sg : do not generate t-spanner graph";
+							"-sg : do not generate t-spanner graph (only generated for 2/3 dimension point sets)";
 		
 		HashMap<String, List<String>> input = new HashMap<String, List<String>>();
 		
@@ -168,6 +168,7 @@ public class Main {
 		int dimension = input.getFirst().size();
 		
 		for(List<Double> list : input) {
+			// Check all points have the same dimension
 			if(list.size() != dimension) {
 				try {
 					throw new Exception("Error: incorrect dimension size(s) - " + input.getFirst().toString() + ", "+ list.toString());
@@ -177,6 +178,7 @@ public class Main {
 				}
 			}
 			
+			// Check all points are unique
 			if(!stringInput.add(list.toString()))
 				try {
 					throw new Exception("Error: duplicate coordinate in input set - " + list.toString());
@@ -222,7 +224,7 @@ public class Main {
 	}
 	
 	/*
-	 *	Methods for randomly generated point sets 
+	 *	Method for randomly generated point sets 
 	 */
 	public static LinkedList<List<Double>> randomDataSet(int numPoints, int dimensionSize, double min, double max, int precision) {
 		LinkedList<List<Double>> pointSet = new LinkedList<List<Double>>();

@@ -12,6 +12,7 @@ public class DoublyLinkedListIterator implements Iterator<PointNode>{
 		reverse = false;
 	}
 	
+	// Iterator from tail to head
 	public DoublyLinkedListIterator(PointNode _p, boolean _reverse) {
 		current = _p;
 		reverse = _reverse;
