@@ -37,10 +37,12 @@ public class Main {
 		
 		double separationRatio = 4.00001;
 		
-		String helpmsg = "[-h | --help] [-f filepath | -r [numPoints dimension minPoint maxPoint [pointPrecision]] [-s separationRatio]" +
+		String helpmsg = "[-h | --help] [-st | -ws] [-f filepath | -r [numPoints dimension minPoint maxPoint [pointPrecision]] [-s separationRatio]\n" +
 							"-r : randomly generated datapoints, with optional parameters defining rng\n" + 
-							"-s : sepration ratio for WSPD construction" +
-							"-sg : do not generate t-spanner graph (only generated for 2/3 dimension point sets)";
+							"-s : sepration ratio for WSPD construction\n" +
+							"-sg : do not generate t-spanner graph (only generated for 2/3 dimension point sets)\n" +
+							"-st : run split tree only\n" +
+							"-ws : run split tree and wspd";
 		
 		HashMap<String, List<String>> input = new HashMap<String, List<String>>();
 		
@@ -54,6 +56,8 @@ public class Main {
 					key = args[i];
 					if(input.containsKey(key)) { 
 						// error
+						System.out.println("Error duplicate options in command line input.\n" + helpmsg);
+						System.exit(1);
 					}
 					
 					input.put(key, new ArrayList<String>());
@@ -116,6 +120,8 @@ public class Main {
 		
 		System.out.println("\n\n----------------------------------------------------------------\n\n");
 		
+		if(input.containsKey("-st")) { System.exit(1); }
+		
 		System.out.println("WSPD:");
 		
 		LinkedList<Pair> resultSet = null;
@@ -132,6 +138,8 @@ public class Main {
 		}
 		
 		System.out.println("\n\n----------------------------------------------------------------\n\n");
+		
+		if(input.containsKey("-ws")) { System.exit(1); }
 		
 		System.out.println("t-Spanner:");
 		
